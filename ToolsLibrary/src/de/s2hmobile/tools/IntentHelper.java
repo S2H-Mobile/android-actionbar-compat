@@ -22,8 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 
 public class IntentHelper {
@@ -31,10 +29,10 @@ public class IntentHelper {
 	private IntentHelper() {}
 	
 	/**
-	 * Builds an intent to launch either the Google Play app or the website.
-	 * @param context the context
-	 * @param packageName the package name of the app
-	 * @return the intent
+	 * Builds an intent to launch Google Play, either the native app or the website.
+	 * @param context the application context
+	 * @param packageName the application package
+	 * @return the intent to launch Google Play
 	 */
 	public static Intent launchGPlay(Context context, String packageName) {	
 		Intent result = new Intent(Intent.ACTION_VIEW);
@@ -59,12 +57,5 @@ public class IntentHelper {
 		PackageManager pm = context.getPackageManager();
 		List<ResolveInfo> activities = pm.queryIntentActivities(intent, flag);
 		return activities.size() > 0;
-	}
-	  
-    public static boolean isConnected(Context context) {
-	    ConnectivityManager cm =
-	        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo info = cm.getActiveNetworkInfo();
-	    return info != null && info.isConnectedOrConnecting();
 	}
 }

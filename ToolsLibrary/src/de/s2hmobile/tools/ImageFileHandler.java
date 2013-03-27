@@ -19,6 +19,7 @@ package de.s2hmobile.tools;
 import java.io.File;
 import java.io.IOException;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Environment;
 import android.widget.ImageView;
@@ -32,8 +33,17 @@ public class ImageFileHandler{
 	
     private ImageFileHandler() {}
 
-    public static void loadBitmap(Object caller, String fileName,
-    		ImageView view, int width, int height){
+    /**
+     * Executes a BitmapFileTask to render a bitmap from the given file.
+     * @param activity the calling activity
+     * @param fileName the name of the image file
+     * @param view the view displaying the bitmap
+     * @param width the width of the target bitmap
+     * @param height the height of the target bitmap
+     */
+    public static void loadBitmap(Activity activity, String fileName,
+    		ImageView view, int width, int height) {
+    // public static void loadBitmap<T extends OnBitmapRenderedListener> ()
     	File file = null;
 		try {
 			file = ImageFileHandler.getFile(fileName);
@@ -41,7 +51,7 @@ public class ImageFileHandler{
 			handleException(e);
 		}
         if (file != null && file.exists()) {
-	    	final BitmapFileTask task =	new BitmapFileTask(caller,
+	    	final BitmapFileTask task =	new BitmapFileTask(activity,
 	    			file.getAbsolutePath(), view);
 	    	final Integer[] params = {width, height};
             task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, params);         

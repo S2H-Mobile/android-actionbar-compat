@@ -18,6 +18,7 @@ package de.s2hmobile.tools.multithreading;
 
 import java.lang.ref.WeakReference;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
@@ -30,13 +31,13 @@ public class BitmapFileTask extends AsyncTask<Integer, Void, Bitmap> {
 	
 	/**
 	 * Construct a BitmapFileTask.
-	 * @param caller the calling activity
+	 * @param activity the activity executing this task
 	 * @param path the path to the image file
 	 * @param imageView the host view
 	 */
-	public BitmapFileTask(Object caller, String path, ImageView imageView){
+	public BitmapFileTask(Activity activity, String path, ImageView imageView){
        try {
-        	mCallback = (OnBitmapRenderedListener) caller;
+        	mCallback = (OnBitmapRenderedListener) activity;
         } catch(ClassCastException e) {
         	android.util.Log.e("BitmapFileTask",
         			"Caller must implement OnBitmapRenderedListener.", e);
