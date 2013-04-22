@@ -21,17 +21,21 @@ import java.util.Date;
 import java.util.Locale;
 
 public class StringHelper {
-	
-	private StringHelper() {}
-		
-	public static String formatDate(String template, long time){
-		SimpleDateFormat sdf = new SimpleDateFormat(template, Locale.getDefault());
+
+	private StringHelper() {
+	}
+
+	public static String formatDate(String template, long time) {
+		SimpleDateFormat sdf = new SimpleDateFormat(template,
+				Locale.getDefault());
 		return sdf.format(new Date(time));
 	}
-	
+
 	/**
 	 * Checks if a string is null, empty or blank.
-	 * @param str the string to test
+	 * 
+	 * @param str
+	 *            the string to test
 	 * @return true if str is null, empty, or blank
 	 */
 	public static boolean isEmpty(String str) {

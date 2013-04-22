@@ -28,129 +28,142 @@ import android.widget.TabHost.TabSpec;
 import java.util.HashMap;
 
 /**
- * This is a helper class to build tabs on pre-Honeycomb. Call {@link
- * ActionBarTabActivity#getTabHelper()} to get the generic instance for
+ * This is a helper class to build tabs on pre-Honeycomb. Call
+ * {@link ActionBarTabActivity#getTabHelper()} to get the generic instance for
  * compatibility with other versions.
- *
- * It implements a generic mechanism for associating fragments with the tabs in a tab host.  It
- * relies on a trick:  Normally a tab host has a simple API for supplying a View or Intent that each
- * tab will show.  This is not sufficient for switching between fragments.  So instead we make the
- * content part of the tab host 0dp high (it is not shown) and this supplies its own dummy view to
- * show as the tab content.  It listens to changes in tabs, then passes the event back to the tab's
- * callback interface so the activity can take care of switching to the correct fragment.
+ * 
+ * It implements a generic mechanism for associating fragments with the tabs in
+ * a tab host. It relies on a trick: Normally a tab host has a simple API for
+ * supplying a View or Intent that each tab will show. This is not sufficient
+ * for switching between fragments. So instead we make the content part of the
+ * tab host 0dp high (it is not shown) and this supplies its own dummy view to
+ * show as the tab content. It listens to changes in tabs, then passes the event
+ * back to the tab's callback interface so the activity can take care of
+ * switching to the correct fragment.
  */
-public class TabHelperEclair extends TabHelper implements TabHost.OnTabChangeListener {
+public class TabHelperEclair extends TabHelper implements
+		TabHost.OnTabChangeListener {
 
-    private final HashMap<String, CompatTab> mTabs = new HashMap<String, CompatTab>();
-    private TabHost mTabHost;
-    CompatTabListener mCallback;
-    CompatTab mLastTab;
+	private final HashMap<String, CompatTab> mTabs = new HashMap<String, CompatTab>();
+	private TabHost mTabHost;
+	CompatTabListener mCallback;
+	CompatTab mLastTab;
 
-    protected TabHelperEclair(FragmentActivity activity) {
-        super(activity);
-        mActivity = activity;
-    }
+	protected TabHelperEclair(FragmentActivity activity) {
+		super(activity);
+		mActivity = activity;
+	}
 
-    @Override
-    protected void setUp() {
-        if (mTabHost == null) {
-            mTabHost = (TabHost) mActivity.findViewById(android.R.id.tabhost);
-            mTabHost.setup();
-            mTabHost.setOnTabChangedListener(this);
-        }
-    }
+	@Override
+	protected void setUp() {
+		if (mTabHost == null) {
+			mTabHost = (TabHost) mActivity.findViewById(android.R.id.tabhost);
+			mTabHost.setup();
+			mTabHost.setOnTabChangedListener(this);
+		}
+	}
 
-    @Override
-    public void addTab(CompatTab tab) {
-        String tag = tab.getTag();
-        TabSpec spec;
+	@Override
+	public void addTab(CompatTab tab) {
+		String tag = tab.getTag();
+		TabSpec spec;
 
-        if (tab.getIcon() != null) {
-            spec = mTabHost.newTabSpec(tag).setIndicator(tab.getText(), tab.getIcon());
-        } else {
-            spec = mTabHost.newTabSpec(tag).setIndicator(tab.getText());
-        }
+		if (tab.getIcon() != null) {
+			spec = mTabHost.newTabSpec(tag).setIndicator(tab.getText(),
+					tab.getIcon());
+		} else {
+			spec = mTabHost.newTabSpec(tag).setIndicator(tab.getText());
+		}
 
-        spec.setContent(new DummyTabFactory(mActivity));
+		spec.setContent(new DummyTabFactory(mActivity));
 
-        // Check to see if we already have a fragment for this tab, probably
-        // from a previously saved state.  If so, deactivate it, because our
-        // initial state is that a tab isn't shown.
+		// Check to see if we already have a fragment for this tab, probably
+		// from a previously saved state. If so, deactivate it, because our
+		// initial state is that a tab isn't shown.
 
-        Fragment fragment = mActivity.getSupportFragmentManager().findFragmentByTag(tag);
-        tab.setFragment(fragment);
+		Fragment fragment = mActivity.getSupportFragmentManager()
+				.findFragmentByTag(tag);
+		tab.setFragment(fragment);
 
-        if (fragment != null && !fragment.isDetached()) {
-            FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-            ft.detach(fragment);
-            ft.commit();
-        }
+		if (fragment != null && !fragment.isDetached()) {
+			FragmentTransaction ft = mActivity.getSupportFragmentManager()
+					.beginTransaction();
+			ft.detach(fragment);
+			ft.commit();
+		}
 
-        mTabs.put(tag, tab);
-        mTabHost.addTab(spec);
-    }
+		mTabs.put(tag, tab);
+		mTabHost.addTab(spec);
+	}
 
-    /**
-     * Converts the basic "tab changed" event for TabWidget into the three possible events for
-     * CompatTabListener: selected, unselected, reselected.
-     */
-    @Override
-    public void onTabChanged(String tabId) {
-        CompatTab newTab = mTabs.get(tabId);
-        FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
+	/**
+	 * Converts the basic "tab changed" event for TabWidget into the three
+	 * possible events for CompatTabListener: selected, unselected, reselected.
+	 */
+	@Override
+	public void onTabChanged(String tabId) {
+		CompatTab newTab = mTabs.get(tabId);
+		FragmentTransaction ft = mActivity.getSupportFragmentManager()
+				.beginTransaction();
 
-        if (mLastTab != newTab) {
-            if (mLastTab != null) {
-                if (mLastTab.getFragment() != null) {
-                    // Pass the unselected event back to the tab's CompatTabListener
-                    mLastTab.getCallback().onTabUnselected(mLastTab, ft);
-                }
-            }
-            if (newTab != null) {
-                // Pass the selected event back to the tab's CompatTabListener
-                newTab.getCallback().onTabSelected(newTab, ft);
-            }
+		if (mLastTab != newTab) {
+			if (mLastTab != null) {
+				if (mLastTab.getFragment() != null) {
+					// Pass the unselected event back to the tab's
+					// CompatTabListener
+					mLastTab.getCallback().onTabUnselected(mLastTab, ft);
+				}
+			}
+			if (newTab != null) {
+				// Pass the selected event back to the tab's CompatTabListener
+				newTab.getCallback().onTabSelected(newTab, ft);
+			}
 
-            mLastTab = newTab;
-        } else {
-            // Pass the re-selected event back to the tab's CompatTabListener
-            newTab.getCallback().onTabReselected(newTab, ft);
-        }
+			mLastTab = newTab;
+		} else {
+			// Pass the re-selected event back to the tab's CompatTabListener
+			newTab.getCallback().onTabReselected(newTab, ft);
+		}
 
-        ft.commit();
-        mActivity.getSupportFragmentManager().executePendingTransactions();
-    }
+		ft.commit();
+		mActivity.getSupportFragmentManager().executePendingTransactions();
+	}
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // Save and restore the selected tab for rotations/restarts.
-        outState.putString("tab", mTabHost.getCurrentTabTag());
-    }
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// Save and restore the selected tab for rotations/restarts.
+		if (mTabHost != null) {
+			// TODO debug, replace hardcoded string "tab"
+			outState.putString("tab", mTabHost.getCurrentTabTag());
+		} else {
+			android.util.Log.w("TabHelperEclair", "mTabHost is null!!");
+		}
+	}
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
-        }
-    }
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
+		}
+	}
 
-    /**
-     * Backwards-compatibility mumbo jumbo
-     */
-    static class DummyTabFactory implements TabHost.TabContentFactory {
+	/**
+	 * Backwards-compatibility mumbo jumbo
+	 */
+	static class DummyTabFactory implements TabHost.TabContentFactory {
 
-        private final Context mContext;
+		private final Context mContext;
 
-        public DummyTabFactory(Context context) {
-            mContext = context;
-        }
+		public DummyTabFactory(Context context) {
+			mContext = context;
+		}
 
-        @Override
-        public View createTabContent(String tag) {
-            View v = new View(mContext);
-            v.setMinimumWidth(0);
-            v.setMinimumHeight(0);
-            return v;
-        }
-    }
+		@Override
+		public View createTabContent(String tag) {
+			View v = new View(mContext);
+			v.setMinimumWidth(0);
+			v.setMinimumHeight(0);
+			return v;
+		}
+	}
 }

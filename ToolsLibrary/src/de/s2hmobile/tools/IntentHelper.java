@@ -26,34 +26,44 @@ import android.net.Uri;
 
 public class IntentHelper {
 
-	private IntentHelper() {}
-	
+	private IntentHelper() {
+	}
+
 	/**
-	 * Builds an intent to launch Google Play, either the native app or the website.
-	 * @param context the application context
-	 * @param packageName the application package
+	 * Builds an intent to launch Google Play, either the native app or the
+	 * website.
+	 * 
+	 * @param context
+	 *            the application context
+	 * @param packageName
+	 *            the application package
 	 * @return the intent to launch Google Play
 	 */
-	public static Intent launchGPlay(Context context, String packageName) {	
+	public static Intent launchGPlay(Context context, String packageName) {
 		Intent result = new Intent(Intent.ACTION_VIEW);
 		Uri data = Uri.parse("market://details?id=" + packageName);
 		result.setData(data);
 		if (!isIntentSafe(context, result, PackageManager.MATCH_DEFAULT_ONLY)) {
-			data = Uri.parse("http://play.google.com/store/apps/details?id=" + packageName);
+			data = Uri.parse("http://play.google.com/store/apps/details?id="
+					+ packageName);
 			result.setData(data);
 		}
 		return result;
 	}
-	
-    /**
-     * Uses the {@link PackageManager} to check if the intent can be handled. 
-     * 
-     * @param context for the package manager
-     * @param intent the intent to evaluate
-     * @param flag for querying, indicates the package category
-     * @return true if there is at least one activity that can handle the intent
-     */
-	protected static boolean isIntentSafe(Context context, Intent intent, int flag) {
+
+	/**
+	 * Uses the {@link PackageManager} to check if the intent can be handled.
+	 * 
+	 * @param context
+	 *            for the package manager
+	 * @param intent
+	 *            the intent to evaluate
+	 * @param flag
+	 *            for querying, indicates the package category
+	 * @return true if there is at least one activity that can handle the intent
+	 */
+	protected static boolean isIntentSafe(Context context, Intent intent,
+			int flag) {
 		PackageManager pm = context.getPackageManager();
 		List<ResolveInfo> activities = pm.queryIntentActivities(intent, flag);
 		return activities.size() > 0;

@@ -22,21 +22,21 @@ import android.support.v4.app.FragmentTransaction;
  * @see android.app.ActionBar.TabListener
  */
 public interface CompatTabListener {
-    /**
-     * @see android.app.ActionBar.TabListener#onTabSelected(
-     *android.app.ActionBar.Tab, android.app.FragmentTransaction)
-     */
-    public void onTabSelected(CompatTab tab, FragmentTransaction ft);
+	/**
+	 * @see android.app.ActionBar.TabListener#onTabSelected(android.app.ActionBar.Tab,
+	 *      android.app.FragmentTransaction)
+	 */
+	public void onTabSelected(CompatTab tab, FragmentTransaction ft);
 
-    /**
-     * @see android.app.ActionBar.TabListener#onTabUnselected(
-     *android.app.ActionBar.Tab, android.app.FragmentTransaction)
-     */
-    public void onTabUnselected(CompatTab tab, FragmentTransaction ft);
+	/**
+	 * @see android.app.ActionBar.TabListener#onTabUnselected(android.app.ActionBar.Tab,
+	 *      android.app.FragmentTransaction)
+	 */
+	public void onTabUnselected(CompatTab tab, FragmentTransaction ft);
 
-    /**
-     * @see android.app.ActionBar.TabListener#onTabReselected(
-     *android.app.ActionBar.Tab, android.app.FragmentTransaction)
-     */
-    public void onTabReselected(CompatTab tab, FragmentTransaction ft);
+	/**
+	 * @see android.app.ActionBar.TabListener#onTabReselected(android.app.ActionBar.Tab,
+	 *      android.app.FragmentTransaction)
+	 */
+	public void onTabReselected(CompatTab tab, FragmentTransaction ft);
 }

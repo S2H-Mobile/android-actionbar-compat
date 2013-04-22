@@ -22,17 +22,18 @@ import android.content.pm.PackageManager;
 import android.provider.MediaStore;
 
 public class CamHelper {
-	
+
 	public static final int REQ_TAKE_PICTURE = 1;
-	
-	private CamHelper() {}
-	
+
+	private CamHelper() {
+	}
+
 	public static Intent takePicture(Context context, String fileName) {
 		Intent intent = null;
-		if (hasCamera(context)){
+		if (hasCamera(context)) {
 			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			int flag = PackageManager.MATCH_DEFAULT_ONLY;
-			if (IntentHelper.isIntentSafe(context, intent, flag)){	
+			if (IntentHelper.isIntentSafe(context, intent, flag)) {
 				android.net.Uri uri = ImageFileHandler.getFileUri(fileName);
 				if (uri != null) {
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -44,7 +45,8 @@ public class CamHelper {
 		return intent;
 	}
 
-	private static boolean hasCamera(Context context){
-		return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+	private static boolean hasCamera(Context context) {
+		return context.getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_CAMERA);
 	}
 }

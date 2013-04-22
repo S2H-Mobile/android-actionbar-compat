@@ -24,70 +24,79 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that defers common functionality across app activities to an {@link
- * ActionBarHelper}. It extends {@link android.support.v4.app.FragmentActivity},
- * so derived acivtities can use fragments. Derived classes must call 
- * {@link ActionBarFragmentActivity#setUpActionBarHelper(Activity, boolean)} in their
- * onCreate() method to set up the actionbar helper.
+ * <p>
+ * A base activity that defers all ActionBarCompat functionality across
+ * activities to an {@link ActionBarHelper}. It extends
+ * {@link android.support.v4.app.FragmentActivity}, so derived acivtities can
+ * use fragments. Derived classes must call
+ * {@link ActionBarFragmentActivity#setUpActionBarHelper(Activity, boolean)} in
+ * their onCreate() method to set up the actionbar helper.
+ * </p>
  */
 public abstract class ActionBarFragmentActivity extends FragmentActivity {
-    
+
 	private ActionBarHelper mActionBarHelper = null;
 
-    /**
-     * Sets up the actionbar helper.
-     * @param activity the calling activity
-     * @param isHomeStateful indicates the type of home item
-     */
-	protected void setUpActionBarHelper(Activity activity, boolean isHomeStateful) {
-    	mActionBarHelper = ActionBarHelper.createInstance(activity, isHomeStateful);
-    }    
-    
-    /**
-     * Returns the {@link ActionBarHelper} for this activity.
-     */
-    protected ActionBarHelper getActionBarHelper() {
-        return mActionBarHelper;
-    }
+	/**
+	 * Sets up the {@link ActionBarHelper} for this activity. From within a
+	 * derived activity, this method must be called before super.onCreate().
+	 * 
+	 * @param activity
+	 *            the activity
+	 * @param isHomeStateful
+	 *            indicates the type of home item
+	 */
+	protected void setUpActionBarHelper(Activity activity,
+			boolean isHomeStateful) {
+		mActionBarHelper = ActionBarHelper.createInstance(activity,
+				isHomeStateful);
+	}
 
-    /**{@inheritDoc}*/
-    @Override
-    public MenuInflater getMenuInflater() {
-        return mActionBarHelper.getMenuInflater(super.getMenuInflater());
-    }
+	/**
+	 * Returns the {@link ActionBarHelper} for this activity.
+	 */
+	protected ActionBarHelper getActionBarHelper() {
+		return mActionBarHelper;
+	}
 
-    /**{@inheritDoc}*/
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mActionBarHelper.onCreate(savedInstanceState);
-    }
+	/** {@inheritDoc} */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mActionBarHelper.onCreate(savedInstanceState);
+	}
 
-    /**{@inheritDoc}*/
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mActionBarHelper.onPostCreate(savedInstanceState);
-    }
+	/** {@inheritDoc} */
+	@Override
+	public MenuInflater getMenuInflater() {
+		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
+	}
 
-    /**
-     * Base action bar-aware implementation for
-     * {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
-     *
-     * Note: marking menu items as invisible/visible is not currently supported.
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        boolean retValue = false;
-        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
-        retValue |= super.onCreateOptionsMenu(menu);
-        return retValue;
-    }
+	/** {@inheritDoc} */
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mActionBarHelper.onPostCreate(savedInstanceState);
+	}
 
-    /**{@inheritDoc}*/
-    @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        mActionBarHelper.onTitleChanged(title, color);
-        super.onTitleChanged(title, color);
-    }
+	/**
+	 * Base action bar-aware implementation for
+	 * {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
+	 * 
+	 * Note: marking menu items as invisible/visible is not currently supported.
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		boolean retValue = false;
+		retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
+		retValue |= super.onCreateOptionsMenu(menu);
+		return retValue;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void onTitleChanged(CharSequence title, int color) {
+		mActionBarHelper.onTitleChanged(title, color);
+		super.onTitleChanged(title, color);
+	}
 }

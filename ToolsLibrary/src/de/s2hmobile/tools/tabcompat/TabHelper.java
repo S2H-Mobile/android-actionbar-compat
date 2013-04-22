@@ -21,60 +21,65 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 /**
- * Convenience helper to build a set of tabs for a {@link ActionBarTabActivity}. To use this class,
- * extend {@link ActionBarTabActivity} and:
- *
- * Call {@link ActionBarTabActivity#getTabHelper()}, returning a {@link TabHelper}.
- *
+ * Convenience helper to build a set of tabs for a {@link ActionBarTabActivity}.
+ * To use this class, extend {@link ActionBarTabActivity} and:
+ * 
+ * Call {@link ActionBarTabActivity#getTabHelper()}, returning a
+ * {@link TabHelper}.
+ * 
  * Create a {@link CompatTabListener}.
- *
+ * 
  * Call {@link TabHelper#newTab(String)} to create each tab.
- *
+ * 
  * Call CompatTab.setText().setIcon().setTabListener() to set up your tabs.
- *
+ * 
  * Call {@link TabHelper#addTab(CompatTab)} for each tab, and you're done.
  */
 public abstract class TabHelper {
 
-    protected FragmentActivity mActivity;
+	private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
-    protected TabHelper(FragmentActivity activity) {
-        mActivity = activity;
-    }
+	protected FragmentActivity mActivity;
 
-    /**
-     * Factory method for creating TabHelper objects for a given activity. Depending on which device
-     * the app is running, either a basic helper or Honeycomb-specific helper will be returned.
-     * Don't call this yourself; the ActionBarTabActivity instantiates one. Instead call
-     * ActionBarTabActivity.getTabHelper().
-     */
-    public static TabHelper createInstance(FragmentActivity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            return new TabHelperHoneycomb(activity);
-        } else {
-            return new TabHelperEclair(activity);
-        }
-    }
+	protected TabHelper(FragmentActivity activity) {
+		mActivity = activity;
+	}
 
-    /**
-     * Create a new tab.
-     *
-     * @param tag A unique tag to associate with the tab and associated fragment
-     * @return CompatTab for the appropriate android version
-     */
-    public CompatTab newTab(String tag) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            return new CompatTabHoneycomb(mActivity, tag);
-        } else {
-            return new CompatTabEclair(mActivity, tag);
-        }
-    }
+	/**
+	 * Factory method for creating TabHelper objects for a given activity.
+	 * Depending on which device the app is running, either a basic helper or
+	 * Honeycomb-specific helper will be returned. Don't call this yourself; the
+	 * ActionBarTabActivity instantiates one. Instead call
+	 * ActionBarTabActivity.getTabHelper().
+	 */
+	public static TabHelper createInstance(FragmentActivity activity) {
+		if (IS_HONEYCOMB) {
+			return new TabHelperHoneycomb(activity);
+		} else {
+			return new TabHelperEclair(activity);
+		}
+	}
 
-    public abstract void addTab(CompatTab tab);
+	/**
+	 * Create a new tab.
+	 * 
+	 * @param tag
+	 *            A unique tag to associate with the tab and associated fragment
+	 * @return CompatTab for the appropriate android version
+	 */
+	public CompatTab newTab(String tag) {
+		if (IS_HONEYCOMB) {
+			return new CompatTabHoneycomb(mActivity, tag);
+		} else {
+			return new CompatTabEclair(mActivity, tag);
+		}
+	}
 
-    protected abstract void onSaveInstanceState(Bundle outState);
+	public abstract void addTab(CompatTab tab);
 
-    protected abstract void onRestoreInstanceState(Bundle savedInstanceState);
+	protected abstract void onSaveInstanceState(Bundle outState);
 
-    protected abstract void setUp();
+	protected abstract void onRestoreInstanceState(Bundle savedInstanceState);
+
+	protected abstract void setUp();
 }

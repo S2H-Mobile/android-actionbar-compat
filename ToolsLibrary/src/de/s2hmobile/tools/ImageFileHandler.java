@@ -19,49 +19,55 @@ package de.s2hmobile.tools;
 import java.io.File;
 import java.io.IOException;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Environment;
 import android.widget.ImageView;
 import de.s2hmobile.tools.multithreading.AsyncTask;
 import de.s2hmobile.tools.multithreading.BitmapFileTask;
 
-public class ImageFileHandler{
- 
-	// cache the file handler
-    private static File sFile = null;
-	
-    private ImageFileHandler() {}
+public class ImageFileHandler {
 
-    /**
-     * Executes a BitmapFileTask to render a bitmap from the given file.
-     * @param activity the calling activity
-     * @param fileName the name of the image file
-     * @param view the view displaying the bitmap
-     * @param width the width of the target bitmap
-     * @param height the height of the target bitmap
-     */
-    public static void loadBitmap(Activity activity, String fileName,
-    		ImageView view, int width, int height) {
-    // public static void loadBitmap<T extends OnBitmapRenderedListener> ()
-    	File file = null;
+	// cache the file handler
+	private static File sFile = null;
+
+	private ImageFileHandler() {
+	}
+
+	/**
+	 * Executes a BitmapFileTask to render a bitmap from the given file.
+	 * 
+	 * @param activity
+	 *            the calling activity
+	 * @param fileName
+	 *            the name of the image file
+	 * @param view
+	 *            the view displaying the bitmap
+	 * @param width
+	 *            the width of the target bitmap
+	 * @param height
+	 *            the height of the target bitmap
+	 */
+	public static void loadBitmap(Object caller, String fileName,
+			ImageView view, int width, int height) {
+		// public static void loadBitmap<T extends OnBitmapRenderedListener> ()
+		File file = null;
 		try {
 			file = ImageFileHandler.getFile(fileName);
 		} catch (IOException e) {
 			handleException(e);
 		}
-        if (file != null && file.exists()) {
-	    	final BitmapFileTask task =	new BitmapFileTask(activity,
-	    			file.getAbsolutePath(), view);
-	    	final Integer[] params = {width, height};
-            task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, params);         
-        }
+		if (file != null && file.exists()) {
+			final BitmapFileTask task = new BitmapFileTask(caller,
+					file.getAbsolutePath(), view);
+			final Integer[] params = { width, height };
+			task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, params);
+		}
 	}
-		
-	public static Uri getFileUri(String name){
+
+	public static Uri getFileUri(String name) {
 		Uri result = null;
 		try {
-		    result = Uri.fromFile(ImageFileHandler.getFile(name));
+			result = Uri.fromFile(ImageFileHandler.getFile(name));
 		} catch (IOException e) {
 			handleException(e);
 		}
@@ -71,31 +77,33 @@ public class ImageFileHandler{
 	public static boolean deleteImageFile(String name) {
 		boolean isDeleted = false;
 		try {
-		    isDeleted = ImageFileHandler.getFile(name).delete();
+			isDeleted = ImageFileHandler.getFile(name).delete();
 		} catch (IOException e) {
 			handleException(e);
 		}
 		return isDeleted;
 	}
-	    
-	private static File getFile(String name) throws IOException{
+
+	private static File getFile(String name) throws IOException {
 		if (sFile == null) {
 			if (isExternalStorageWritable()) {
-	    		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-	    		path.mkdirs();
+				File path = Environment
+						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+				path.mkdirs();
 				sFile = new File(path, name);
-	    	} else {
-	    		throw new IOException("Can't create path to external storage directory.");
-	    	}   	
+			} else {
+				throw new IOException(
+						"Can't create path to external storage directory.");
+			}
 		}
 		return sFile;
 	}
 
 	private static boolean isExternalStorageWritable() {
-	    String state = Environment.getExternalStorageState();
-	    return Environment.MEDIA_MOUNTED.equals(state);
+		String state = Environment.getExternalStorageState();
+		return Environment.MEDIA_MOUNTED.equals(state);
 	}
-	
+
 	private static void handleException(IOException e) {
 		android.util.Log.e("ImageFileHandler",
 				"IOException occured while handling file.", e);

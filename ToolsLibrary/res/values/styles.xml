@@ -24,16 +24,9 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:style/Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
         <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompat</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-
-        <!-- for programmatic instantiation -->
         <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitle</item>
         <item name="actionbarCompatItemStyle">@style/ActionBarCompatItem</item>
         <item name="actionbarCompatItemStatefulHomeStyle">@style/ActionBarCompatItemStatefulHome</item>
@@ -95,6 +88,7 @@
      
   <!-- This style is for API level 8-10 only. -->
   <style name="CustomTabWidget" parent="style/AppBaseTheme" >
+    <!-- <item name="android:tabWidgetStyle">?android:attr/tabWidgetStyle</item> -->  
     <item name="android:textColor">@color/actionbar_title_color</item>
     <item name="android:tabStripEnabled">true</item>
     <item name="android:tabStripLeft">@drawable/actionbar_shadow</item>
