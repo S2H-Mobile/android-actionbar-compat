@@ -1,4 +1,5 @@
-/*
+/* Modified by S2H Mobile, 2013.
+ * 
  * Copyright 2012 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +18,10 @@
 package de.s2hmobile.tools.tabcompat;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import de.s2hmobile.tools.R;
 import de.s2hmobile.tools.actionbarcompat.ActionBarFragmentActivity;
 
 /**
@@ -35,25 +39,25 @@ import de.s2hmobile.tools.actionbarcompat.ActionBarFragmentActivity;
 public abstract class ActionBarTabActivity extends ActionBarFragmentActivity {
 	private TabHelper mTabHelper = null;
 
-	protected void setUpTabHelper(FragmentActivity activity,
+	protected void setUpActionBarTabHelper(FragmentActivity activity,
 			boolean isHomeStateful) {
-		// mTabHelper = TabHelper.createInstance(ActionBarTabActivity.this);
 		mTabHelper = TabHelper.createInstance(activity);
 		super.setUpActionBarHelper(activity, isHomeStateful);
 	}
 
-	// @Override
-	// protected void onCreate(Bundle savedInstanceState) {
-	// super.onCreate(savedInstanceState);
-	//
-	// /* The argument for createInstance() is a FragmentActivity. In this
-	// * implementation, the argument is the same as in the sample library.
-	// * An alternative implementation is
-	// * Activity parent = ActionBarTabActivity.this.getParent();
-	// * mTabHelper = TabHelper.createInstance(parent);
-	// */
-	// mTabHelper = TabHelper.createInstance(ActionBarTabActivity.this);
-	// }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.tab_compat);
+		/*
+		 * The argument for createInstance() is a FragmentActivity. In this
+		 * implementation, the argument is the same as in the sample library. An
+		 * alternative implementation is Activity parent =
+		 * ActionBarTabActivity.this.getParent(); mTabHelper =
+		 * TabHelper.createInstance(parent); TODO test alternative instantiation
+		 * mTabHelper = TabHelper.createInstance(ActionBarTabActivity.this);
+		 */
+	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -73,5 +77,66 @@ public abstract class ActionBarTabActivity extends ActionBarFragmentActivity {
 	protected TabHelper getTabHelper() {
 		mTabHelper.setUp();
 		return mTabHelper;
+	}
+
+	public static class ActionBarTabListener<T extends Fragment> implements
+			CompatTabListener {
+
+		private final ActionBarTabActivity mActivity;
+		private final Bundle mArgs;
+		private final Class<T> mFragmentClass;
+		private final int mContainerId;
+
+		/**
+		 * Constructor used each time a new tab is created.
+		 * 
+		 * @param activity
+		 *            The host Activity, used to instantiate the fragment
+		 * @param clz
+		 *            The fragment's Class, used to instantiate the fragment
+		 * @param args
+		 *            Arguments for the fragment
+		 */
+		public ActionBarTabListener(ActionBarTabActivity activity,
+				Class<T> clz, Bundle args) {
+			mActivity = activity;
+			mFragmentClass = clz;
+			mArgs = args;
+			mContainerId = android.R.id.tabcontent;
+			// TODO android.R.id.tabcontent might be replaced with
+			// Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+			// ? android.R.id.content // Honeycomb and above
+			// : R.id.realtabcontent; // Froyo and Gingerbread
+		}
+
+		@Override
+		public void onTabSelected(CompatTab tab, FragmentTransaction ft) {
+			// Check if the fragment is already initialized
+			Fragment fragment = tab.getFragment();
+			if (fragment == null) {
+				// If not, instantiate and add it to the activity
+				fragment = Fragment.instantiate(mActivity,
+						mFragmentClass.getName(), mArgs);
+				tab.setFragment(fragment);
+				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				ft.add(mContainerId, fragment, tab.getTag());
+			} else {
+				// If it exists, simply attach it in order to show it
+				ft.attach(fragment);
+			}
+		}
+
+		@Override
+		public void onTabUnselected(CompatTab tab, FragmentTransaction ft) {
+			Fragment fragment = tab.getFragment();
+			if (fragment != null) {
+				// Detach the fragment, because another one is being attached
+				ft.detach(fragment);
+			}
+		}
+
+		@Override
+		public void onTabReselected(CompatTab tab, FragmentTransaction ft) {
+		}
 	}
 }

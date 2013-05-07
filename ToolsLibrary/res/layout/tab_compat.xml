@@ -15,31 +15,31 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
 <!-- This layout is for API level 5-10 only. -->
+
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
-    
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
         <TabWidget
             android:id="@android:id/tabs"
-            
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Fragments inflate their layout into this container. -->
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
     </LinearLayout>
+
 </TabHost>

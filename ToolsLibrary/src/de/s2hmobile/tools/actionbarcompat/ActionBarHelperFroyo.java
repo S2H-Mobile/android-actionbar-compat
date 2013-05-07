@@ -26,6 +26,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.view.InflateException;
@@ -50,13 +51,14 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	private static final String MENU_ATTR_ID = "id";
 	private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
-	protected boolean isHomeStateful = false;
+	/** Indicates whether the home icon is clickable. */
+	private final boolean mHomeStateful;
 
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
 
 	protected ActionBarHelperFroyo(Activity activity, boolean isHomeStateful) {
 		super(activity);
-		this.isHomeStateful = isHomeStateful;
+		mHomeStateful = isHomeStateful;
 	}
 
 	/** {@inheritDoc} */
@@ -179,28 +181,27 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	 * .
 	 */
 	private View addActionItemCompatFromMenuItem(final MenuItem item) {
-		final int itemId = item.getItemId();
-
 		final ViewGroup actionBar = getActionBarCompat();
 		if (actionBar == null) {
 			return null;
 		}
-		// choose button style depending on type of menu item
-		int defStyle = itemId == android.R.id.home ?
-		// choose style of home item
-		isHomeStateful ? R.attr.actionbarCompatItemStatefulHomeStyle
+		final int itemId = item.getItemId();
+		
+		// choose style depending on type of menu item
+		int buttonStyle = itemId == android.R.id.home ? mHomeStateful ? R.attr.actionbarCompatItemStatefulHomeStyle
 				: R.attr.actionbarCompatItemHomeStyle
 				: R.attr.actionbarCompatItemStyle;
-		// create the button
-		ImageButton actionButton = new ImageButton(mActivity, null, defStyle);
-		actionButton
-				.setLayoutParams(new ViewGroup.LayoutParams(
-						(int) mActivity
-								.getResources()
-								.getDimension(
-										itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width
-												: R.dimen.actionbar_compat_button_width),
-						ViewGroup.LayoutParams.MATCH_PARENT));
+
+		// create action item
+		ImageButton actionButton = new ImageButton(mActivity, null, buttonStyle);
+
+		// configure action item
+		Resources res = mActivity.getResources();
+		int dimenId = itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width
+				: R.dimen.actionbar_compat_button_width;
+		int width = (int) res.getDimension(dimenId);
+		int height = ViewGroup.LayoutParams.MATCH_PARENT;
+		actionButton.setLayoutParams(new ViewGroup.LayoutParams(width, height));
 		if (itemId == R.id.menu_refresh) {
 			actionButton.setId(R.id.actionbar_compat_item_refresh);
 		}
@@ -218,30 +219,26 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 		if (item.getItemId() == R.id.menu_refresh) {
 			// Refresh buttons should be stateful, and allow for indeterminate
-			// progress indicators,
-			// so add those.
+			// progress indicators, so add those.
 			ProgressBar indicator = new ProgressBar(mActivity, null,
 					R.attr.actionbarCompatProgressIndicatorStyle);
 
-			final int buttonWidth = mActivity.getResources()
-					.getDimensionPixelSize(
-							R.dimen.actionbar_compat_button_width);
-			final int buttonHeight = mActivity.getResources()
+			final int buttonWidth = res
+					.getDimensionPixelSize(R.dimen.actionbar_compat_button_width);
+			final int buttonHeight = res
 					.getDimensionPixelSize(R.dimen.actionbar_compat_height);
 			final int progressIndicatorWidth = buttonWidth / 2;
 
-			LinearLayout.LayoutParams indicatorLayoutParams = new LinearLayout.LayoutParams(
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					progressIndicatorWidth, progressIndicatorWidth);
-			indicatorLayoutParams.setMargins(
-					(buttonWidth - progressIndicatorWidth) / 2,
+			params.setMargins((buttonWidth - progressIndicatorWidth) / 2,
 					(buttonHeight - progressIndicatorWidth) / 2,
 					(buttonWidth - progressIndicatorWidth) / 2, 0);
-			indicator.setLayoutParams(indicatorLayoutParams);
+			indicator.setLayoutParams(params);
 			indicator.setVisibility(View.GONE);
 			indicator.setId(R.id.actionbar_compat_item_refresh_progress);
 			actionBar.addView(indicator);
 		}
-
 		return actionButton;
 	}
 
