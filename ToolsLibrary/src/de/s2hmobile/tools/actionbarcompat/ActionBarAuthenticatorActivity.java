@@ -17,40 +17,25 @@
 
 package de.s2hmobile.tools.actionbarcompat;
 
+import android.accounts.AccountAuthenticatorActivity;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that defers all ActionBarCompat functionality across
- * activities to an {@link ActionBarHelper}. It extends
- * {@link android.support.v4.app.FragmentActivity}, so derived acivtities can
- * use fragments.
+ * A base activity that extends {@link AccountAuthenticatorActivity}. It defers
+ * common functionality across app activities to an {@link ActionBarHelper}.
+ * Derived activities need to implement {@link ActionBarConfigurator}. Using
+ * fragments and dynamically marking menu items as invisible/visible is not
+ * currently supported.
  */
-public abstract class ActionBarFragmentActivity extends FragmentActivity
-		implements ActionBarConfigurator {
+public abstract class ActionBarAuthenticatorActivity extends
+		AccountAuthenticatorActivity implements ActionBarConfigurator {
 
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
-			.createInstance(ActionBarFragmentActivity.this, isHomeStateful());
-
-	// private ActionBarHelper mActionBarHelper = null;
-
-	/**
-	 * Sets up the {@link ActionBarHelper} for this activity. From within a
-	 * derived activity, this method must be called before super.onCreate().
-	 * 
-	 * @param activity
-	 *            the activity
-	 * @param isHomeStateful
-	 *            indicates the type of home item
-	 */
-	// protected void setUpActionBarHelper(Activity activity,
-	// boolean isHomeStateful) {
-	// mActionBarHelper = ActionBarHelper.createInstance(activity,
-	// isHomeStateful);
-	// }
+			.createInstance(ActionBarAuthenticatorActivity.this,
+					isHomeStateful());
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this activity.
@@ -61,15 +46,15 @@ public abstract class ActionBarFragmentActivity extends FragmentActivity
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mActionBarHelper.onCreate(savedInstanceState);
+	public MenuInflater getMenuInflater() {
+		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public MenuInflater getMenuInflater() {
-		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mActionBarHelper.onCreate(savedInstanceState);
 	}
 
 	/** {@inheritDoc} */

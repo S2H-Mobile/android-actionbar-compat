@@ -45,8 +45,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	@Override
 	public void setRefreshActionItemState(boolean refreshing) {
 		// On Honeycomb, we can set the state of the refresh button by giving it
-		// a custom
-		// action view.
+		// a custom action view.
 		if (mOptionsMenu == null) {
 			return;
 		}
@@ -60,7 +59,6 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 					mRefreshIndeterminateProgressView = inflater.inflate(
 							R.layout.actionbar_indeterminate_progress, null);
 				}
-
 				refreshItem.setActionView(mRefreshIndeterminateProgressView);
 			} else {
 				refreshItem.setActionView(null);

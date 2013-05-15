@@ -23,24 +23,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * <p>
  * A base activity that defers common functionality across app activities to an
  * {@link ActionBarHelper}. Dynamically marking menu items as invisible/visible
- * is not currently supported.
- * </p>
- * 
- * <p>
- * This base activity can be extended by activities that
- * <ul>
- * <li>do not use fragments</li>
- * <li>and have a stateful home item, so that users can navigate to the main
- * activity.</li>
- * </ul>
- * </p>
+ * is not currently supported. To be used for activities that don't want
+ * fragments.
  */
-public abstract class ActionBarActivity extends Activity {
-	final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(
-			this, true);
+public abstract class ActionBarActivity extends Activity implements
+		ActionBarConfigurator {
+
+	private final ActionBarHelper mActionBarHelper = ActionBarHelper
+			.createInstance(ActionBarActivity.this, isHomeStateful());
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this activity.

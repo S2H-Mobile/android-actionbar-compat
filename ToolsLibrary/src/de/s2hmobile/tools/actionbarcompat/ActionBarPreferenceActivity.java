@@ -1,4 +1,5 @@
-/*
+/* File modified by S2H Mobile.
+ * 
  * Copyright 2011 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,19 +17,24 @@
 
 package de.s2hmobile.tools.actionbarcompat;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that defers common functionality across app activities to an
- * {@link ActionBarHelper}. This base activity can be extended by
- * SettingsActivities. It has a stateful home item.
+ * A base activity that extends {@link PreferenceActivity}. It defers common
+ * functionality across app activities to an {@link ActionBarHelper}. Derived
+ * activities need to implement {@link ActionBarConfigurator}. Using fragments
+ * and dynamically marking menu items as invisible/visible is not currently
+ * supported.
  */
-public abstract class ActionBarPreferenceActivity extends PreferenceActivity {
-	final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(
-			this, true);
+public abstract class ActionBarPreferenceActivity extends PreferenceActivity
+		implements ActionBarConfigurator {
+
+	private final ActionBarHelper mActionBarHelper = ActionBarHelper
+			.createInstance(ActionBarPreferenceActivity.this, isHomeStateful());
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this activity.

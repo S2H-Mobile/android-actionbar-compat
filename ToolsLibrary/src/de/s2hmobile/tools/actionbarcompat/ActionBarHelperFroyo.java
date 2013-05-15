@@ -177,8 +177,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	 * information from a {@link android.view.MenuItem}. If the menu item ID is
 	 * <code>menu_refresh</code>, the menu item's state can be changed to show a
 	 * loading spinner using
-	 * {@link de.s2hmobile.tools.actionbarcompat.ActionBarHelperFroyo#setRefreshActionItemState(boolean)}
-	 * .
+	 * {@link ActionBarHelperFroyo#setRefreshActionItemState(boolean)}.
 	 */
 	private View addActionItemCompatFromMenuItem(final MenuItem item) {
 		final ViewGroup actionBar = getActionBarCompat();
@@ -186,7 +185,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 			return null;
 		}
 		final int itemId = item.getItemId();
-		
+
 		// choose style depending on type of menu item
 		int buttonStyle = itemId == android.R.id.home ? mHomeStateful ? R.attr.actionbarCompatItemStatefulHomeStyle
 				: R.attr.actionbarCompatItemHomeStyle

@@ -19,7 +19,6 @@ package de.s2hmobile.tools.tabcompat;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import de.s2hmobile.tools.R;
 import de.s2hmobile.tools.actionbarcompat.ActionBarFragmentActivity;
@@ -37,26 +36,29 @@ import de.s2hmobile.tools.actionbarcompat.ActionBarFragmentActivity;
  * The {@link TabHelper} APIs obfuscate all the compatibility work for you.
  */
 public abstract class ActionBarTabActivity extends ActionBarFragmentActivity {
-	private TabHelper mTabHelper = null;
 
-	protected void setUpActionBarTabHelper(FragmentActivity activity,
-			boolean isHomeStateful) {
-		mTabHelper = TabHelper.createInstance(activity);
-		super.setUpActionBarHelper(activity, isHomeStateful);
-	}
+	/*
+	 * The argument for createInstance() is a FragmentActivity. In this
+	 * implementation, the argument is the same as in the sample library.
+	 * Alternatively one could provide the parent or derived activities as an
+	 * argument.
+	 * Activity parent = ActionBarTabActivity.this.getParent();
+	 * private mTabHelper = TabHelper.createInstance(parent);
+	 */
+	private TabHelper mTabHelper = TabHelper
+			.createInstance(ActionBarTabActivity.this);
+
+	// TODO test new implementation, remove old code
+	// protected void setUpActionBarTabHelper(FragmentActivity activity,
+	// boolean isHomeStateful) {
+	// mTabHelper = TabHelper.createInstance(activity);
+	// super.setUpActionBarHelper(activity, isHomeStateful);
+	// }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tab_compat);
-		/*
-		 * The argument for createInstance() is a FragmentActivity. In this
-		 * implementation, the argument is the same as in the sample library. An
-		 * alternative implementation is Activity parent =
-		 * ActionBarTabActivity.this.getParent(); mTabHelper =
-		 * TabHelper.createInstance(parent); TODO test alternative instantiation
-		 * mTabHelper = TabHelper.createInstance(ActionBarTabActivity.this);
-		 */
 	}
 
 	@Override
