@@ -16,7 +16,10 @@
 
 package de.s2hmobile.tools.tabcompat;
 
+import de.s2hmobile.tools.ActionBarTabActivity;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,6 +30,7 @@ import android.support.v4.app.FragmentTransaction;
  * {@link ActionBarTabActivity#getTabHelper()} to get the generic instance for
  * compatibility with older versions.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class TabHelperHoneycomb extends TabHelper {
 
 	ActionBar mActionBar;
@@ -36,7 +40,7 @@ public class TabHelperHoneycomb extends TabHelper {
 	}
 
 	@Override
-	protected void setUp() {
+	public void setUp() {
 		if (mActionBar == null) {
 			mActionBar = mActivity.getActionBar();
 			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -73,13 +77,13 @@ public class TabHelperHoneycomb extends TabHelper {
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) {
 		int position = mActionBar.getSelectedTab().getPosition();
 		outState.putInt("tab_position", position);
 	}
 
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		int position = savedInstanceState.getInt("tab_position");
 		mActionBar.setSelectedNavigationItem(position);
 	}

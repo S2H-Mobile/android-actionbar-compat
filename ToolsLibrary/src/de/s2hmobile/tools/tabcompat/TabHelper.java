@@ -16,6 +16,7 @@
 
 package de.s2hmobile.tools.tabcompat;
 
+import de.s2hmobile.tools.ActionBarTabActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -77,9 +78,9 @@ public abstract class TabHelper {
 
 	public abstract void addTab(CompatTab tab);
 
-	protected abstract void onSaveInstanceState(Bundle outState);
+	public abstract void onSaveInstanceState(Bundle outState);
 
-	protected abstract void onRestoreInstanceState(Bundle savedInstanceState);
+	public abstract void onRestoreInstanceState(Bundle savedInstanceState);
 
-	protected abstract void setUp();
+	public abstract void setUp();
 }

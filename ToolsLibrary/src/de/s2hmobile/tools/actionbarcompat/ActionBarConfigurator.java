@@ -1,5 +1,5 @@
 package de.s2hmobile.tools.actionbarcompat;
 
-interface ActionBarConfigurator {
-	boolean isHomeStateful();
+public interface ActionBarConfigurator {
+	public boolean isHomeStateful();
 }

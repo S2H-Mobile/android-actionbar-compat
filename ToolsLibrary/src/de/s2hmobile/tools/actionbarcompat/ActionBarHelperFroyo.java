@@ -148,7 +148,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onTitleChanged(CharSequence title, int color) {
+	public void onTitleChanged(CharSequence title, int color) {
 		TextView titleView = (TextView) mActivity
 				.findViewById(R.id.actionbar_compat_title);
 		if (titleView != null) {

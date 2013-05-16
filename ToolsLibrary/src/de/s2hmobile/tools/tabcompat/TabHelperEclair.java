@@ -27,6 +27,8 @@ import android.widget.TabHost.TabSpec;
 
 import java.util.HashMap;
 
+import de.s2hmobile.tools.ActionBarTabActivity;
+
 /**
  * This is a helper class to build tabs on pre-Honeycomb. Call
  * {@link ActionBarTabActivity#getTabHelper()} to get the generic instance for
@@ -55,7 +57,7 @@ public class TabHelperEclair extends TabHelper implements
 	}
 
 	@Override
-	protected void setUp() {
+	public void setUp() {
 		if (mTabHost == null) {
 			mTabHost = (TabHost) mActivity.findViewById(android.R.id.tabhost);
 			mTabHost.setup();
@@ -130,7 +132,7 @@ public class TabHelperEclair extends TabHelper implements
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) {
 		// Save and restore the selected tab for rotations/restarts.
 		if (mTabHost != null) {
 			// TODO debug, replace hardcoded string "tab"
@@ -141,7 +143,7 @@ public class TabHelperEclair extends TabHelper implements
 	}
 
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}

@@ -15,27 +15,26 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.actionbarcompat;
+package de.s2hmobile.tools;
 
-import android.accounts.AccountAuthenticatorActivity;
+import de.s2hmobile.tools.actionbarcompat.ActionBarConfigurator;
+import de.s2hmobile.tools.actionbarcompat.ActionBarHelper;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that extends {@link AccountAuthenticatorActivity}. It defers
- * common functionality across app activities to an {@link ActionBarHelper}.
- * Derived activities need to implement {@link ActionBarConfigurator}. Using
- * fragments and dynamically marking menu items as invisible/visible is not
- * currently supported.
+ * A base activity that defers common functionality across app activities to an
+ * {@link ActionBarHelper}. Dynamically marking menu items as invisible/visible
+ * is not currently supported. To be used for activities that don't want
+ * fragments.
  */
-public abstract class ActionBarAuthenticatorActivity extends
-		AccountAuthenticatorActivity implements ActionBarConfigurator {
+public abstract class ActionBarActivity extends Activity implements
+		ActionBarConfigurator {
 
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
-			.createInstance(ActionBarAuthenticatorActivity.this,
-					isHomeStateful());
+			.createInstance(ActionBarActivity.this, isHomeStateful());
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this activity.
