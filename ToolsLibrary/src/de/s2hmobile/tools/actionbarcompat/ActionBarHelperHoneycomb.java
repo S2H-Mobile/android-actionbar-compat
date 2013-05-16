@@ -16,13 +16,13 @@
 
 package de.s2hmobile.tools.actionbarcompat;
 
+import de.s2hmobile.tools.R;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import de.s2hmobile.tools.R;
 
 /**
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific

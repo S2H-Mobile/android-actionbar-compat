@@ -1,9 +1,0 @@
-ToolsLibrary
-Version 1.3 Beta
-
-Copyright © 2012 - 2013, S2H Mobile
-The code in this project is licensed under the Apache Software License 2.0.
-
-This software uses the AsyncTask class and the ActionBarCompat project, which
-have been published by The Android Open Source Project under the Apache Software
-License 2.0.

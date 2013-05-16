@@ -14,3 +14,7 @@ Copyright © 2012 - 2013, S2H Mobile
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+   This software is based on the ActionBarCompat and TabCompat sample projects,
+   which are published by Android Open Source Project under the Apache Software
+   License 2.0.
