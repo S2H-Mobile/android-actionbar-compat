@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.s2hmobile.tools"
+    package="de.s2hmobile.compat"
     android:versionCode="4"
     android:versionName="1.3" >
 

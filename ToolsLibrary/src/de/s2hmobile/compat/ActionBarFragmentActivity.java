@@ -15,26 +15,44 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools;
+package de.s2hmobile.compat;
 
-import de.s2hmobile.tools.actionbarcompat.ActionBarConfigurator;
-import de.s2hmobile.tools.actionbarcompat.ActionBarHelper;
+import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
+import de.s2hmobile.compat.actionbar.ActionBarHelper;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that defers common functionality across app activities to an
- * {@link ActionBarHelper}. Dynamically marking menu items as invisible/visible
- * is not currently supported. To be used for activities that don't want
- * fragments.
+ * A base activity that defers all ActionBarCompat functionality across
+ * activities to an {@link ActionBarHelper}. It extends
+ * {@link android.support.v4.app.FragmentActivity}, so derived acivtities can
+ * use fragments.
  */
-public abstract class ActionBarActivity extends Activity implements
-		ActionBarConfigurator {
+public abstract class ActionBarFragmentActivity extends FragmentActivity
+		implements ActionBarConfigurator {
 
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
-			.createInstance(ActionBarActivity.this, isHomeStateful());
+			.createInstance(ActionBarFragmentActivity.this, isHomeStateful());
+
+	// private ActionBarHelper mActionBarHelper = null;
+
+	/**
+	 * Sets up the {@link ActionBarHelper} for this activity. From within a
+	 * derived activity, this method must be called before super.onCreate().
+	 * 
+	 * @param activity
+	 *            the activity
+	 * @param isHomeStateful
+	 *            indicates the type of home item
+	 */
+	// protected void setUpActionBarHelper(Activity activity,
+	// boolean isHomeStateful) {
+	// mActionBarHelper = ActionBarHelper.createInstance(activity,
+	// isHomeStateful);
+	// }
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this activity.
@@ -45,15 +63,15 @@ public abstract class ActionBarActivity extends Activity implements
 
 	/** {@inheritDoc} */
 	@Override
-	public MenuInflater getMenuInflater() {
-		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mActionBarHelper.onCreate(savedInstanceState);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mActionBarHelper.onCreate(savedInstanceState);
+	public MenuInflater getMenuInflater() {
+		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
 	}
 
 	/** {@inheritDoc} */

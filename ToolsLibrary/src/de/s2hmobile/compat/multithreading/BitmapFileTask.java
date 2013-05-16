@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.multithreading;
+package de.s2hmobile.compat.multithreading;
 
 import java.lang.ref.WeakReference;
 

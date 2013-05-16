@@ -15,28 +15,29 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools;
+package de.s2hmobile.compat;
 
-import de.s2hmobile.tools.actionbarcompat.ActionBarConfigurator;
-import de.s2hmobile.tools.actionbarcompat.ActionBarHelper;
+import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
+import de.s2hmobile.compat.actionbar.ActionBarHelper;
+import android.accounts.AccountAuthenticatorActivity;
 import android.app.Activity;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that extends {@link PreferenceActivity}. It defers common
- * functionality across app activities to an {@link ActionBarHelper}. Derived
- * activities need to implement {@link ActionBarConfigurator}. Using fragments
- * and dynamically marking menu items as invisible/visible is not currently
- * supported.
+ * A base activity that extends {@link AccountAuthenticatorActivity}. It defers
+ * common functionality across app activities to an {@link ActionBarHelper}.
+ * Derived activities need to implement {@link ActionBarConfigurator}. Using
+ * fragments and dynamically marking menu items as invisible/visible is not
+ * currently supported.
  */
-public abstract class ActionBarPreferenceActivity extends PreferenceActivity
-		implements ActionBarConfigurator {
+public abstract class ActionBarAuthenticatorActivity extends
+		AccountAuthenticatorActivity implements ActionBarConfigurator {
 
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
-			.createInstance(ActionBarPreferenceActivity.this, isHomeStateful());
+			.createInstance(ActionBarAuthenticatorActivity.this,
+					isHomeStateful());
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this activity.
@@ -54,9 +55,8 @@ public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 	/** {@inheritDoc} */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// request window feature before adding content
-		mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
+		mActionBarHelper.onCreate(savedInstanceState);
 	}
 
 	/** {@inheritDoc} */
@@ -80,10 +80,10 @@ public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 		return retValue;
 	}
 
-	// /**{@inheritDoc}*/
-	// @Override
-	// protected void onTitleChanged(CharSequence title, int color) {
-	// mActionBarHelper.onTitleChanged(title, color);
-	// super.onTitleChanged(title, color);
-	// }
+	/** {@inheritDoc} */
+	@Override
+	protected void onTitleChanged(CharSequence title, int color) {
+		mActionBarHelper.onTitleChanged(title, color);
+		super.onTitleChanged(title, color);
+	}
 }

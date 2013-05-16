@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.actionbarcompat;
+package de.s2hmobile.compat.actionbar;
 
 import android.app.Activity;
 import android.os.Build;

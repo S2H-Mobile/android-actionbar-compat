@@ -1,6 +1,6 @@
-package de.s2hmobile.tools.tabcompat;
+package de.s2hmobile.compat.tab;
 
-import de.s2hmobile.tools.ActionBarTabActivity;
+import de.s2hmobile.compat.ActionBarTabActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 

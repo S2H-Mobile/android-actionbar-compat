@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.tabcompat;
+package de.s2hmobile.compat.tab;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ import android.widget.TabHost.TabSpec;
 
 import java.util.HashMap;
 
-import de.s2hmobile.tools.ActionBarTabActivity;
+import de.s2hmobile.compat.ActionBarTabActivity;
 
 /**
  * This is a helper class to build tabs on pre-Honeycomb. Call

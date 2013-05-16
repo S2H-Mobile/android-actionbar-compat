@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools;
+package de.s2hmobile.compat;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import de.s2hmobile.tools.R;
-import de.s2hmobile.tools.tabcompat.CompatTab;
-import de.s2hmobile.tools.tabcompat.CompatTabListener;
-import de.s2hmobile.tools.tabcompat.TabHelper;
+import de.s2hmobile.compat.R;
+import de.s2hmobile.compat.tab.CompatTab;
+import de.s2hmobile.compat.tab.CompatTabListener;
+import de.s2hmobile.compat.tab.TabHelper;
 
 /**
  * A base activity that defers tab functionality to a {@link TabHelper}.

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.actionbarcompat;
+package de.s2hmobile.compat.actionbar;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ import java.util.Set;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import de.s2hmobile.tools.R;
+import de.s2hmobile.compat.R;
 
 import android.app.Activity;
 import android.content.Context;

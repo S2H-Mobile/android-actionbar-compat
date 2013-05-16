@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.actionbarcompat;
+package de.s2hmobile.compat.actionbar;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

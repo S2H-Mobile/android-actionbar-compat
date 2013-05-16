@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.tabcompat;
+package de.s2hmobile.compat.tab;
 
-import de.s2hmobile.tools.ActionBarTabActivity;
+import de.s2hmobile.compat.ActionBarTabActivity;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.os.Build;

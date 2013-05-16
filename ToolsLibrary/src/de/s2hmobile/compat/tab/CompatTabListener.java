@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.s2hmobile.tools.tabcompat;
+package de.s2hmobile.compat.tab;
 
 import android.support.v4.app.FragmentTransaction;
 

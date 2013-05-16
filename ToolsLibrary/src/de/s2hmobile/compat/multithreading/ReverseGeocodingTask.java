@@ -1,4 +1,4 @@
-package de.s2hmobile.tools.multithreading;
+package de.s2hmobile.compat.multithreading;
 
 import java.util.List;
 import java.util.Locale;
