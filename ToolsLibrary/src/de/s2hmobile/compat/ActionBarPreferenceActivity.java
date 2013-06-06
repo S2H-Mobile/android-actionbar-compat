@@ -35,6 +35,7 @@ import android.view.MenuInflater;
 public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 		implements ActionBarConfigurator {
 
+	/** The {@link ActionBarHelper} instance for this base activity. */
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
 			.createInstance(ActionBarPreferenceActivity.this, isHomeStateful());
 

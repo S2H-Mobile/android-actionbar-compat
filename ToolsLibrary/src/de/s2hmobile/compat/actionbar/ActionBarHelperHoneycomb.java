@@ -1,4 +1,5 @@
-/*
+/* File modified by S2H Mobile.
+ * 
  * Copyright 2011 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +18,12 @@
 package de.s2hmobile.compat.actionbar;
 
 import de.s2hmobile.compat.R;
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,12 +33,21 @@ import android.view.View;
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific
  * functionality for Honeycomb tablets. It thus requires API level 11.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
-	private Menu mOptionsMenu;
-	private View mRefreshIndeterminateProgressView = null;
 
-	protected ActionBarHelperHoneycomb(Activity activity) {
-		super(activity);
+	// caching the refresh progress view
+	// private View mIndeterminateProgressView = null;
+	private Menu mOptionsMenu = null;
+
+	protected ActionBarHelperHoneycomb(Activity activity,
+			final boolean isHomeStateful) {
+		super(activity, isHomeStateful);
+	}
+
+	@Override
+	public void invalidateOptionsMenu() {
+		mActivity.invalidateOptionsMenu();
 	}
 
 	@Override
@@ -42,36 +56,66 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * Honeycomb specific implementation of
+	 * {@link Activity#onPostCreate(android.os.Bundle)}. Sets the state of the
+	 * home item as defined in {@link ActionBarConfigurator} callback.
+	 */
 	@Override
-	public void setRefreshActionItemState(boolean refreshing) {
-		// On Honeycomb, we can set the state of the refresh button by giving it
-		// a custom action view.
-		if (mOptionsMenu == null) {
-			return;
-		}
+	public void onPostCreate(Bundle savedInstanceState) {
+		ActionBar actionBar = mActivity.getActionBar();
+		if (actionBar != null) {
+			android.util.Log.i("ActionBarHelperHoneycomb",
+					"getActionBar() returns sucessfully");
 
-		final MenuItem refreshItem = mOptionsMenu.findItem(R.id.menu_refresh);
-		if (refreshItem != null) {
-			if (refreshing) {
-				if (mRefreshIndeterminateProgressView == null) {
-					LayoutInflater inflater = (LayoutInflater) getActionBarThemedContext()
-							.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					mRefreshIndeterminateProgressView = inflater.inflate(
-							R.layout.actionbar_indeterminate_progress, null);
-				}
-				refreshItem.setActionView(mRefreshIndeterminateProgressView);
-			} else {
-				refreshItem.setActionView(null);
+			// enable home icon to behave as action item
+			actionBar.setDisplayHomeAsUpEnabled(mHomeActive);
+		} else {
+			android.util.Log.w("ActionBarHelperHoneycomb",
+					"getActionBar() returns null!");
+		}
+	}
+
+	/**
+	 * Sets the state of the refresh button by giving it a custom action view.
+	 */
+	@Override
+	public void setRefreshActionItemState(final boolean refreshing) {
+		if (mOptionsMenu != null) {
+			final MenuItem refreshItem = mOptionsMenu
+					.findItem(R.id.menu_refresh);
+			if (refreshItem != null) {
+				refreshItem.setActionView(getRefreshProgressView(refreshing));
 			}
 		}
 	}
 
 	/**
 	 * Returns a {@link Context} suitable for inflating layouts for the action
-	 * bar. The implementation for this method in {@link ActionBarHelperICS}
-	 * asks the action bar for a themed context.
+	 * bar.
 	 */
 	protected Context getActionBarThemedContext() {
 		return mActivity;
+	}
+
+	private View getRefreshProgressView(final boolean isRefreshing) {
+		if (isRefreshing) {
+			android.util.Log.i("ActionBarHelperHoneycomb",
+					"getRefreshProgressView() creates a new view");
+			// if (mIndeterminateProgressView == null) {
+
+			// inflate the progress bar from XML file in layout-v11
+			Context themedContext = getActionBarThemedContext();
+			LayoutInflater inflater = (LayoutInflater) themedContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			return inflater.inflate(R.layout.actionbar_indeterminate_progress,
+					null);
+			// mIndeterminateProgressView = inflater.inflate(
+			// R.layout.actionbar_indeterminate_progress, null);
+			// }
+			// return mIndeterminateProgressView;
+		} else {
+			return null;
+		}
 	}
 }

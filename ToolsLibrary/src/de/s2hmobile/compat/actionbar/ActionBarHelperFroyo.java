@@ -52,14 +52,10 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	private static final String MENU_ATTR_ID = "id";
 	private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
-	/** Indicates whether the home icon is clickable. */
-	private final boolean mHomeStateful;
-
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
 
 	protected ActionBarHelperFroyo(Activity activity, boolean isHomeStateful) {
-		super(activity);
-		mHomeStateful = isHomeStateful;
+		super(activity, isHomeStateful);
 	}
 
 	/** {@inheritDoc} */
@@ -132,14 +128,12 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	}
 
 	/**
-	 * Action bar helper code to be run in
-	 * {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
-	 * 
-	 * NOTE: This code will mark on-screen menu items as invisible.
+	 * ActionBar helper code to be run in
+	 * {@link Activity#onCreateOptionsMenu(android.view.Menu)}. Hides on-screen
+	 * action items from the options menu by marking them as invisible.
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Hides on-screen action items from the options menu.
 		for (Integer id : mActionItemIds) {
 			menu.findItem(id).setVisible(false);
 		}
@@ -188,7 +182,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		final int itemId = item.getItemId();
 
 		// choose style depending on type of menu item
-		int buttonStyle = itemId == android.R.id.home ? mHomeStateful ? R.attr.actionbarCompatItemStatefulHomeStyle
+		int buttonStyle = itemId == android.R.id.home ? mHomeActive ? R.attr.actionbarCompatItemStatefulHomeStyle
 				: R.attr.actionbarCompatItemHomeStyle
 				: R.attr.actionbarCompatItemStyle;
 

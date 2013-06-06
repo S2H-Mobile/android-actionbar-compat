@@ -15,23 +15,38 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
 <resources>
 
-    <style name="AppBaseTheme" parent="android:style/Theme.Holo.Light">
-        <item name="android:actionBarStyle">@style/ActionBar</item>
+    <style name="AppBaseThemeLight" parent="android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/ActionBarLight</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
     </style>
 
-    <style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/actionbar_background_color</item>
-        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+    <style name="ActionBarLight" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/actionbar_background_light</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleLight</item>
         <item name="android:icon">@drawable/ic_home</item>
     </style>
 
-    <style name="ActionBarTitle">
-        <item name="android:textColor">@color/actionbar_title_color</item>
+    <style name="ActionBarTitleLight">
+        <item name="android:textColor">@color/actionbar_title_light</item>
+    </style>
+    
+    <style name="AppBaseThemeDark" parent="android:style/Theme.Holo">
+        <item name="android:actionBarStyle">@style/ActionBarDark</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+    </style>
+
+    <style name="ActionBarDark" parent="android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/actionbar_background_dark</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleDark</item>
+        <item name="android:icon">@drawable/ic_home</item>
+    </style>
+
+    <style name="ActionBarTitleDark">
+        <item name="android:textColor">@color/actionbar_title_dark</item>
     </style>
 
 </resources>

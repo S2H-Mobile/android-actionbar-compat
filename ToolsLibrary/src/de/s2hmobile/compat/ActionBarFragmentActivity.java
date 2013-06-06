@@ -26,38 +26,26 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that defers all ActionBarCompat functionality across
+ * A base activity that defers all ActionBar functionality across derived
  * activities to an {@link ActionBarHelper}. It extends
- * {@link android.support.v4.app.FragmentActivity}, so derived acivtities can
- * use fragments.
+ * {@link android.support.v4.app.FragmentActivity}, so fragments can be used.
  */
 public abstract class ActionBarFragmentActivity extends FragmentActivity
 		implements ActionBarConfigurator {
 
+	/**
+	 * The {@link ActionBarHelper} instance. Instantiated with a static call to
+	 * {@link ActionBarHelper#createInstance(Activity, boolean)}. Arguments are
+	 * the base activity and the boolean flag as set by the callback.
+	 */
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
 			.createInstance(ActionBarFragmentActivity.this, isHomeStateful());
 
-	// private ActionBarHelper mActionBarHelper = null;
-
 	/**
-	 * Sets up the {@link ActionBarHelper} for this activity. From within a
-	 * derived activity, this method must be called before super.onCreate().
-	 * 
-	 * @param activity
-	 *            the activity
-	 * @param isHomeStateful
-	 *            indicates the type of home item
+	 * Returns the {@link ActionBarHelper} for this
+	 * {@link ActionBarFragmentActivity}.
 	 */
-	// protected void setUpActionBarHelper(Activity activity,
-	// boolean isHomeStateful) {
-	// mActionBarHelper = ActionBarHelper.createInstance(activity,
-	// isHomeStateful);
-	// }
-
-	/**
-	 * Returns the {@link ActionBarHelper} for this activity.
-	 */
-	protected ActionBarHelper getActionBarHelper() {
+	public ActionBarHelper getActionBarHelper() {
 		return mActionBarHelper;
 	}
 

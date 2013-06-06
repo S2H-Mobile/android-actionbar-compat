@@ -35,32 +35,28 @@ import android.view.MenuInflater;
  */
 public abstract class ActionBarHelper {
 
-	protected Activity mActivity = null;
+	protected final Activity mActivity;
 
-	/**
-	 * Factory method for creating {@link ActionBarHelper} objects for a given
-	 * activity. Depending on the type of activity and on the device the app is
-	 * running on, a specific helper will be returned.
-	 * 
-	 * @param activity
-	 *            the calling activity
-	 * @param isHomeStateful
-	 *            true if caller is home activity
-	 * @return a version specific helper
-	 */
-	public static ActionBarHelper createInstance(Activity activity,
-			boolean isHomeStateful) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			return new ActionBarHelperICS(activity);
-		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			return new ActionBarHelperHoneycomb(activity);
-		} else {
-			return new ActionBarHelperFroyo(activity, isHomeStateful);
-		}
+	/** Stores the status of the home icon. */
+	protected final boolean mHomeActive;
+
+	protected ActionBarHelper(Activity activity, final boolean isHomeActive) {
+		mActivity = activity;
+		mHomeActive = isHomeActive;
 	}
 
-	protected ActionBarHelper(Activity activity) {
-		mActivity = activity;
+	/**
+	 * Returns a {@link MenuInflater} for use when inflating menus. The
+	 * implementation of this method in {@link ActionBarHelperFroyo} returns a
+	 * wrapped menu inflater that can read action bar metadata from a menu
+	 * resource pre-Honeycomb.
+	 */
+	public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
+		return superMenuInflater;
+	}
+
+	/** Provides access to {@link Activity#invalidateOptionsMenu()}. */
+	public void invalidateOptionsMenu() {
 	}
 
 	/**
@@ -72,20 +68,17 @@ public abstract class ActionBarHelper {
 
 	/**
 	 * Action bar helper code to be run in
-	 * {@link Activity#onPostCreate(android.os.Bundle)}.
+	 * {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
 	 */
-	public void onPostCreate(Bundle savedInstanceState) {
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return true;
 	}
 
 	/**
 	 * Action bar helper code to be run in
-	 * {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
-	 * 
-	 * NOTE: Setting the visibility of menu items in <em>menu</em> is not
-	 * currently supported.
+	 * {@link Activity#onPostCreate(android.os.Bundle)}.
 	 */
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return true;
+	public void onPostCreate(Bundle savedInstanceState) {
 	}
 
 	/**
@@ -102,12 +95,24 @@ public abstract class ActionBarHelper {
 	public abstract void setRefreshActionItemState(boolean refreshing);
 
 	/**
-	 * Returns a {@link MenuInflater} for use when inflating menus. The
-	 * implementation of this method in {@link ActionBarHelperFroyo} returns a
-	 * wrapped menu inflater that can read action bar metadata from a menu
-	 * resource pre-Honeycomb.
+	 * Factory method for creating {@link ActionBarHelper} objects for a given
+	 * activity. Depending on the type of activity and on the device the app is
+	 * running on, a specific helper will be returned.
+	 * 
+	 * @param activity
+	 *            the calling activity
+	 * @param isHomeActive
+	 *            flag to set the status of the home icon
+	 * @return a version specific {@link ActionBarHelper}
 	 */
-	public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
-		return superMenuInflater;
+	public static ActionBarHelper createInstance(Activity activity,
+			final boolean isHomeActive) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			return new ActionBarHelperICS(activity, isHomeActive);
+		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			return new ActionBarHelperHoneycomb(activity, isHomeActive);
+		} else {
+			return new ActionBarHelperFroyo(activity, isHomeActive);
+		}
 	}
 }

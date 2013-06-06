@@ -25,21 +25,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * A base activity that defers common functionality across app activities to an
- * {@link ActionBarHelper}. Dynamically marking menu items as invisible/visible
- * is not currently supported. To be used for activities that don't want
+ * A base activity that defers common ActionBar functionality across app
+ * activities to an {@link ActionBarHelper}. Dynamically marking menu items as
+ * invisible/visible is not currently supported. For activities that don't use
  * fragments.
  */
 public abstract class ActionBarActivity extends Activity implements
 		ActionBarConfigurator {
 
+	/** The {@link ActionBarHelper} instance for this base activity. */
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
 			.createInstance(ActionBarActivity.this, isHomeStateful());
 
 	/**
-	 * Returns the {@link ActionBarHelper} for this activity.
+	 * Returns the {@link ActionBarHelper} for this {@link ActionBarActivity}.
 	 */
-	protected ActionBarHelper getActionBarHelper() {
+	public ActionBarHelper getActionBarHelper() {
 		return mActionBarHelper;
 	}
 
@@ -66,8 +67,6 @@ public abstract class ActionBarActivity extends Activity implements
 	/**
 	 * Base action bar-aware implementation for
 	 * {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
-	 * 
-	 * Note: marking menu items as invisible/visible is not currently supported.
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

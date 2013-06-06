@@ -19,31 +19,44 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<!--
+    <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:style/Theme.Light">
+    <style name="AppBaseThemeLight" parent="android:style/Theme.Light">
         <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
-        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatLight</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitle</item>
+        <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitleLight</item>
         <item name="actionbarCompatItemStyle">@style/ActionBarCompatItem</item>
         <item name="actionbarCompatItemStatefulHomeStyle">@style/ActionBarCompatItemStatefulHome</item>
         <item name="actionbarCompatItemHomeStyle">@style/ActionBarCompatItemHome</item>
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
-        
-        <item name="android:tabWidgetStyle">@style/CustomTabWidget</item>
-    </style>
-        
-    <style name="ActionBarCompat">
-        <item name="android:background">@color/actionbar_background_color</item>
+        <!-- <item name="android:tabWidgetStyle">@style/CustomTabWidget</item> -->
     </style>
     
-    <style name="ActionBarCompatProgressIndicator" parent="android:style/Widget.ProgressBar.Large">
-        <item name="android:indeterminate">true</item>
+     <style name="AppBaseThemeDark" parent="android:style/Theme.Holo">
+        <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
+        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatDark</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitleDark</item>
+        <item name="actionbarCompatItemStyle">@style/ActionBarCompatItem</item>
+        <item name="actionbarCompatItemStatefulHomeStyle">@style/ActionBarCompatItemStatefulHome</item>
+        <item name="actionbarCompatItemHomeStyle">@style/ActionBarCompatItemHome</item>
+        <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
+        <!-- <item name="android:tabWidgetStyle">@style/CustomTabWidget</item> -->
     </style>
 
+    <!-- Styles for the ActionBar. -->
+    <style name="ActionBarCompatLight">
+        <item name="android:background">@color/actionbar_background_light</item>
+    </style>
+
+    <style name="ActionBarCompatDark">
+        <item name="android:background">@color/actionbar_background_dark</item>
+    </style>
+
+    <!-- Styles for the ActionBarCompat title. -->
     <style name="ActionBarCompatTitleBase">
         <item name="android:id">@id/actionbar_compat_title</item>
         <!-- layout_width/height/weight must be set in code -->
@@ -55,44 +68,53 @@
         <item name="android:ellipsize">marquee</item>
     </style>
 
-    <style name="ActionBarCompatTitle" parent="style/ActionBarCompatTitleBase">
-        <item name="android:textColor">@color/actionbar_title_color</item>
+    <style name="ActionBarCompatTitleLight" parent="style/ActionBarCompatTitleBase">
+        <item name="android:textColor">@color/actionbar_title_light</item>
     </style>
 
+    <style name="ActionBarCompatTitleDark" parent="style/ActionBarCompatTitleBase">
+        <item name="android:textColor">@color/actionbar_title_dark</item>
+    </style>
+
+    <!-- Styles for ActionBarCompat items. -->
     <style name="ActionBarCompatItemBase">
-    	<!-- layout_width/height must be set in code -->
         <item name="android:scaleType">center</item>
     </style>
-    
+
     <style name="ActionBarCompatItem" parent="style/ActionBarCompatItemBase">
-    	<item name="android:background">@drawable/actionbar_compat_item</item>
+        <item name="android:background">@drawable/actionbar_compat_item</item>
     </style>
 
     <style name="ActionBarCompatItemStatefulHome" parent="style/ActionBarCompatItemBase">
-    	<item name="android:background">@drawable/actionbar_compat_item</item>
+        <item name="android:background">@drawable/actionbar_compat_item</item>
     </style>
-    
-    <style name="ActionBarCompatItemHome" parent="style/ActionBarCompatItemBase">
+
+    <style name="ActionBarCompatItemHome" parent="style/ActionBarCompatItemBase" />
+
+    <style name="ActionBarCompatProgressIndicator" parent="android:style/Widget.ProgressBar.Large">
+        <item name="android:indeterminate">true</item>
     </style>
-    
-    <style name="wrap" parent="style/AppBaseTheme">
+
+    <!-- other styles, check if they are necessary -->
+    <style name="wrap" parent="style/AppBaseThemeLight">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
-     <style name="match" parent="style/AppBaseTheme">
+
+    <style name="match" parent="style/AppBaseThemeLight">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
-  
-     
-  <!-- This style is for API level 8-10 only. -->
-  <style name="CustomTabWidget" parent="style/AppBaseTheme" >
-    <!-- <item name="android:tabWidgetStyle">?android:attr/tabWidgetStyle</item> -->  
-    <item name="android:textColor">@color/actionbar_title_color</item>
-    <item name="android:tabStripEnabled">true</item>
-    <item name="android:tabStripLeft">@drawable/actionbar_shadow</item>
-    <item name="android:tabStripRight">@drawable/actionbar_shadow</item>
-  </style>
-       
+
+    <!-- This style is for API level 8-10 only. -->
+    <!--
+    <style name="CustomTabWidget" parent="style/AppBaseTheme">
+    	<item name="android:tabWidgetStyle">?android:attr/tabWidgetStyle</item>
+        <item name="android:textColor">@color/actionbar_title_light</item>
+        <item name="android:tabStripEnabled">true</item>
+        <item name="android:tabStripLeft">@drawable/actionbar_shadow</item>
+        <item name="android:tabStripRight">@drawable/actionbar_shadow</item>
+    </style>
+    -->
+
 </resources>
