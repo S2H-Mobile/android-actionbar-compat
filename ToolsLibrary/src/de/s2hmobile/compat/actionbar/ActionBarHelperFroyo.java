@@ -26,6 +26,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import de.s2hmobile.compat.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -83,8 +84,10 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	}
 
 	/**
-	 * Sets up the compatibility action bar with the given title.
+	 * Sets up the compatibility action bar with the given title. The value of
+	 * android.R.id.home is inlined at compile time.
 	 */
+	@SuppressLint("InlinedApi")
 	private void setupActionBar() {
 		final ViewGroup actionBarCompat = getActionBarCompat();
 		if (actionBarCompat == null) {
@@ -95,14 +98,14 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 				0, ViewGroup.LayoutParams.MATCH_PARENT);
 		springLayoutParams.weight = 1;
 
-		// Add Home button
+		// add Home button
 		SimpleMenu tempMenu = new SimpleMenu(mActivity);
 		SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu,
 				android.R.id.home, 0, mActivity.getString(R.string.menu_home));
 		homeItem.setIcon(R.drawable.ic_home);
 		addActionItemCompatFromMenuItem(homeItem);
 
-		// Add title text
+		// add title text
 		TextView titleText = new TextView(mActivity, null,
 				R.attr.actionbarCompatTitleStyle);
 		titleText.setLayoutParams(springLayoutParams);
@@ -182,19 +185,20 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		final int itemId = item.getItemId();
 
 		// choose style depending on type of menu item
-		int buttonStyle = itemId == android.R.id.home ? mHomeActive ? R.attr.actionbarCompatItemStatefulHomeStyle
+		final int buttonStyle = itemId == android.R.id.home ? mHomeActive ? R.attr.actionbarCompatItemStatefulHomeStyle
 				: R.attr.actionbarCompatItemHomeStyle
 				: R.attr.actionbarCompatItemStyle;
 
 		// create action item
-		ImageButton actionButton = new ImageButton(mActivity, null, buttonStyle);
+		final ImageButton actionButton = new ImageButton(mActivity, null,
+				buttonStyle);
 
 		// configure action item
-		Resources res = mActivity.getResources();
-		int dimenId = itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width
+		final Resources res = mActivity.getResources();
+		final int dimenId = itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width
 				: R.dimen.actionbar_compat_button_width;
-		int width = (int) res.getDimension(dimenId);
-		int height = ViewGroup.LayoutParams.MATCH_PARENT;
+		final int width = (int) res.getDimension(dimenId);
+		final int height = ViewGroup.LayoutParams.MATCH_PARENT;
 		actionButton.setLayoutParams(new ViewGroup.LayoutParams(width, height));
 		if (itemId == R.id.menu_refresh) {
 			actionButton.setId(R.id.actionbar_compat_item_refresh);
@@ -266,8 +270,8 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 				parser = mActivity.getResources().getXml(menuResId);
 
 				int eventType = parser.getEventType();
-				int itemId;
-				int showAsAction;
+				int itemId = 0;
+				int showAsAction = 0;
 
 				boolean eof = false;
 				while (!eof) {
@@ -309,6 +313,5 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 				}
 			}
 		}
-
 	}
 }

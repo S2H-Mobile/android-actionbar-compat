@@ -17,7 +17,6 @@
 
 package de.s2hmobile.compat.actionbar;
 
-import de.s2hmobile.compat.R;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -28,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import de.s2hmobile.compat.R;
 
 /**
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific
@@ -36,8 +36,8 @@ import android.view.View;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
-	// caching the refresh progress view
-	// private View mIndeterminateProgressView = null;
+	// caches the refresh progress view
+	private View mIndeterminateProgressView = null;
 	private Menu mOptionsMenu = null;
 
 	protected ActionBarHelperHoneycomb(Activity activity,
@@ -63,16 +63,11 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	 */
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
-		ActionBar actionBar = mActivity.getActionBar();
+		final ActionBar actionBar = mActivity.getActionBar();
 		if (actionBar != null) {
-			android.util.Log.i("ActionBarHelperHoneycomb",
-					"getActionBar() returns sucessfully");
 
 			// enable home icon to behave as action item
 			actionBar.setDisplayHomeAsUpEnabled(mHomeActive);
-		} else {
-			android.util.Log.w("ActionBarHelperHoneycomb",
-					"getActionBar() returns null!");
 		}
 	}
 
@@ -100,20 +95,16 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	private View getRefreshProgressView(final boolean isRefreshing) {
 		if (isRefreshing) {
-			android.util.Log.i("ActionBarHelperHoneycomb",
-					"getRefreshProgressView() creates a new view");
-			// if (mIndeterminateProgressView == null) {
+			if (mIndeterminateProgressView == null) {
 
-			// inflate the progress bar from XML file in layout-v11
-			Context themedContext = getActionBarThemedContext();
-			LayoutInflater inflater = (LayoutInflater) themedContext
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			return inflater.inflate(R.layout.actionbar_indeterminate_progress,
-					null);
-			// mIndeterminateProgressView = inflater.inflate(
-			// R.layout.actionbar_indeterminate_progress, null);
-			// }
-			// return mIndeterminateProgressView;
+				// inflate the progress bar from XML file in layout-v11
+				final Context themedContext = getActionBarThemedContext();
+				LayoutInflater inflater = (LayoutInflater) themedContext
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				mIndeterminateProgressView = inflater.inflate(
+						R.layout.actionbar_indeterminate_progress, null);
+			}
+			return mIndeterminateProgressView;
 		} else {
 			return null;
 		}

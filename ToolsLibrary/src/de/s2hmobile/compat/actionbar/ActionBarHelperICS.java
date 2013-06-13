@@ -43,17 +43,12 @@ public class ActionBarHelperICS extends ActionBarHelperHoneycomb {
 	 */
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
-		ActionBar actionBar = mActivity.getActionBar();
+		final ActionBar actionBar = mActivity.getActionBar();
 		if (actionBar != null) {
-			android.util.Log.i("ActionBarHelperICS",
-					"getActionBar() returns sucessfully");
 
 			// enable home icon to behave as action item
 			actionBar.setDisplayHomeAsUpEnabled(mHomeActive);
 			actionBar.setHomeButtonEnabled(mHomeActive);
-		} else {
-			android.util.Log.w("ActionBarHelperICS",
-					"getActionBar() returns null!");
 		}
 	}
 

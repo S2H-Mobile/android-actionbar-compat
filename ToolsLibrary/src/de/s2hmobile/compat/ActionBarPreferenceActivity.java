@@ -17,13 +17,13 @@
 
 package de.s2hmobile.compat;
 
-import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
-import de.s2hmobile.compat.actionbar.ActionBarHelper;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
+import de.s2hmobile.compat.actionbar.ActionBarHelper;
 
 /**
  * A base activity that extends {@link PreferenceActivity}. It defers common
@@ -55,7 +55,6 @@ public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 	/** {@inheritDoc} */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// request window feature before adding content
 		mActionBarHelper.onCreate(savedInstanceState);
 		super.onCreate(savedInstanceState);
 	}
@@ -81,10 +80,10 @@ public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 		return retValue;
 	}
 
-	// /**{@inheritDoc}*/
-	// @Override
-	// protected void onTitleChanged(CharSequence title, int color) {
-	// mActionBarHelper.onTitleChanged(title, color);
-	// super.onTitleChanged(title, color);
-	// }
+	/** {@inheritDoc} */
+	@Override
+	protected void onTitleChanged(CharSequence title, int color) {
+		mActionBarHelper.onTitleChanged(title, color);
+		super.onTitleChanged(title, color);
+	}
 }

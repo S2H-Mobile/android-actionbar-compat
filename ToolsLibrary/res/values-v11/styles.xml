@@ -32,6 +32,7 @@
 
     <style name="ActionBarTitleLight">
         <item name="android:textColor">@color/actionbar_title_light</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
     
     <style name="AppBaseThemeDark" parent="android:style/Theme.Holo">
@@ -47,6 +48,7 @@
 
     <style name="ActionBarTitleDark">
         <item name="android:textColor">@color/actionbar_title_dark</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
 
 </resources>
