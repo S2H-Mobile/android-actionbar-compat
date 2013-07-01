@@ -40,7 +40,7 @@ public abstract class ActionBarHelper {
 	/** Stores the status of the home icon. */
 	protected final boolean mHomeActive;
 
-	protected ActionBarHelper(Activity activity, final boolean isHomeActive) {
+	protected ActionBarHelper(Activity activity, boolean isHomeActive) {
 		mActivity = activity;
 		mHomeActive = isHomeActive;
 	}
@@ -89,10 +89,10 @@ public abstract class ActionBarHelper {
 	}
 
 	/**
-	 * Sets the indeterminate loading state of the item with ID
-	 * {@link R.id.menu_refresh}. (where the item ID was menu_refresh).
+	 * Sets the indeterminate loading state of the item identified by
+	 *  <code>R.id.menu_refresh</code>.
 	 */
-	public abstract void setRefreshActionItemState(boolean refreshing);
+	public abstract void setRefreshActionItemState(boolean isRefreshing);
 
 	/**
 	 * Factory method for creating {@link ActionBarHelper} objects for a given

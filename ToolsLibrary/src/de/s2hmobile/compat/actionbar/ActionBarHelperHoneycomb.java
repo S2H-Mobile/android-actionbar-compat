@@ -36,12 +36,12 @@ import de.s2hmobile.compat.R;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
-	// caches the refresh progress view
+	/** Stores the refresh progress view. */
 	private View mIndeterminateProgressView = null;
+
 	private Menu mOptionsMenu = null;
 
-	protected ActionBarHelperHoneycomb(Activity activity,
-			final boolean isHomeStateful) {
+	protected ActionBarHelperHoneycomb(Activity activity, boolean isHomeStateful) {
 		super(activity, isHomeStateful);
 	}
 
@@ -59,7 +59,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	/**
 	 * Honeycomb specific implementation of
 	 * {@link Activity#onPostCreate(android.os.Bundle)}. Sets the state of the
-	 * home item as defined in {@link ActionBarConfigurator} callback.
+	 * home item as defined in the {@link ActionBarConfigurator}.
 	 */
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
@@ -99,7 +99,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 				// inflate the progress bar from XML file in layout-v11
 				final Context themedContext = getActionBarThemedContext();
-				LayoutInflater inflater = (LayoutInflater) themedContext
+				final LayoutInflater inflater = (LayoutInflater) themedContext
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				mIndeterminateProgressView = inflater.inflate(
 						R.layout.actionbar_indeterminate_progress, null);

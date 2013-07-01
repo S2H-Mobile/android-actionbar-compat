@@ -39,7 +39,7 @@ public class ActionBarHelperICS extends ActionBarHelperHoneycomb {
 	/**
 	 * IceCreamSandwich specific implementation of
 	 * {@link Activity#onPostCreate(android.os.Bundle)}. Sets the state of the
-	 * home item as defined in {@link ActionBarConfigurator} callback.
+	 * home item as defined in the {@link ActionBarConfigurator}.
 	 */
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
