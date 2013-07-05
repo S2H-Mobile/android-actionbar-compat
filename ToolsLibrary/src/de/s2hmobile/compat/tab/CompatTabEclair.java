@@ -29,13 +29,19 @@ public class CompatTabEclair extends CompatTab {
 	private Drawable mIcon;
 	private Fragment mFragment;
 
-	protected CompatTabEclair(FragmentActivity activity, String tag) {
-		super(activity, tag);
+	protected CompatTabEclair(FragmentActivity activity, String tag, int position) {
+		super(activity, tag, position);
 	}
 
 	@Override
 	public CompatTab setText(int resId) {
 		mText = mActivity.getResources().getText(resId);
+		return this;
+	}
+	
+	@Override
+	public CompatTab setText(CharSequence title) {
+		mText = title;
 		return this;
 	}
 

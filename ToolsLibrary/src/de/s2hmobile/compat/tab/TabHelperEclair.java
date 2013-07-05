@@ -16,6 +16,8 @@
 
 package de.s2hmobile.compat.tab;
 
+import java.util.HashMap;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,14 +26,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
-
-import java.util.HashMap;
-
-import de.s2hmobile.compat.ActionBarTabActivity;
+import de.s2hmobile.compat.TabActivityBase;
 
 /**
  * This is a helper class to build tabs on pre-Honeycomb. Call
- * {@link ActionBarTabActivity#getTabHelper()} to get the generic instance for
+ * {@link TabActivityBase#getTabHelper()} to get the generic instance for
  * compatibility with other versions.
  * 
  * It implements a generic mechanism for associating fragments with the tabs in
@@ -46,23 +45,34 @@ import de.s2hmobile.compat.ActionBarTabActivity;
 public class TabHelperEclair extends TabHelper implements
 		TabHost.OnTabChangeListener {
 
-	private final HashMap<String, CompatTab> mTabs = new HashMap<String, CompatTab>();
-	private TabHost mTabHost;
+	/**
+	 * Create empty view as tabcontent for backwards-compatibility.
+	 */
+	static class DummyTabFactory implements TabHost.TabContentFactory {
+
+		private final Context mContext;
+
+		public DummyTabFactory(Context context) {
+			mContext = context;
+		}
+
+		@Override
+		public View createTabContent(String tag) {
+			View v = new View(mContext);
+			v.setMinimumWidth(0);
+			v.setMinimumHeight(0);
+			return v;
+		}
+	}
+
 	CompatTabListener mCallback;
 	CompatTab mLastTab;
+	private TabHost mTabHost;
+
+	private final HashMap<String, CompatTab> mTabs = new HashMap<String, CompatTab>();
 
 	protected TabHelperEclair(FragmentActivity activity) {
 		super(activity);
-		mActivity = activity;
-	}
-
-	@Override
-	public void setUp() {
-		if (mTabHost == null) {
-			mTabHost = (TabHost) mActivity.findViewById(android.R.id.tabhost);
-			mTabHost.setup();
-			mTabHost.setOnTabChangedListener(this);
-		}
 	}
 
 	@Override
@@ -98,6 +108,24 @@ public class TabHelperEclair extends TabHelper implements
 		mTabHost.addTab(spec);
 	}
 
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// Save and restore the selected tab for rotations/restarts.
+		if (mTabHost != null) {
+			// TODO debug, replace hardcoded string "tab"
+			outState.putString("tab", mTabHost.getCurrentTabTag());
+		} else {
+			android.util.Log.w("TabHelperEclair", "mTabHost is null!!");
+		}
+	}
+
 	/**
 	 * Converts the basic "tab changed" event for TabWidget into the three
 	 * possible events for CompatTabListener: selected, unselected, reselected.
@@ -131,41 +159,21 @@ public class TabHelperEclair extends TabHelper implements
 		mActivity.getSupportFragmentManager().executePendingTransactions();
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		// Save and restore the selected tab for rotations/restarts.
-		if (mTabHost != null) {
-			// TODO debug, replace hardcoded string "tab"
-			outState.putString("tab", mTabHost.getCurrentTabTag());
-		} else {
-			android.util.Log.w("TabHelperEclair", "mTabHost is null!!");
-		}
-	}
-
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
-		}
-	}
-
 	/**
-	 * Backwards-compatibility mumbo jumbo
+	 * ViewPager swipe has changed the fragment, activate the appropriate new
+	 * tab at new position
 	 */
-	static class DummyTabFactory implements TabHost.TabContentFactory {
+	@Override
+	public void setSelectedTab(int position) {
+		mTabHost.setCurrentTab(position);
+	}
 
-		private final Context mContext;
-
-		public DummyTabFactory(Context context) {
-			mContext = context;
-		}
-
-		@Override
-		public View createTabContent(String tag) {
-			View v = new View(mContext);
-			v.setMinimumWidth(0);
-			v.setMinimumHeight(0);
-			return v;
+	@Override
+	public void setUp() {
+		if (mTabHost == null) {
+			mTabHost = (TabHost) mActivity.findViewById(android.R.id.tabhost);
+			mTabHost.setup();
+			mTabHost.setOnTabChangedListener(this);
 		}
 	}
 }

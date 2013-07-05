@@ -16,17 +16,17 @@
 
 package de.s2hmobile.compat.tab;
 
-import de.s2hmobile.compat.ActionBarTabActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import de.s2hmobile.compat.TabActivityBase;
 
 /**
- * Convenience helper to build a set of tabs for a {@link ActionBarTabActivity}.
- * To use this class, extend {@link ActionBarTabActivity} and:
+ * Convenience helper to build a set of tabs for a {@link TabActivityBase}. To
+ * use this class, extend {@link TabActivityBase} and:
  * 
- * Call {@link ActionBarTabActivity#getTabHelper()}, returning a
- * {@link TabHelper}.
+ * Call {@link TabActivityBase#getTabHelper()}, returning a {@link TabHelper}.
  * 
  * Create a {@link CompatTabListener}.
  * 
@@ -38,9 +38,7 @@ import android.support.v4.app.FragmentActivity;
  */
 public abstract class TabHelper {
 
-	private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-
-	protected FragmentActivity mActivity;
+	protected final FragmentActivity mActivity;
 
 	protected TabHelper(FragmentActivity activity) {
 		mActivity = activity;
@@ -54,7 +52,7 @@ public abstract class TabHelper {
 	 * ActionBarTabActivity.getTabHelper().
 	 */
 	public static TabHelper createInstance(FragmentActivity activity) {
-		if (IS_HONEYCOMB) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			return new TabHelperHoneycomb(activity);
 		} else {
 			return new TabHelperEclair(activity);
@@ -68,11 +66,11 @@ public abstract class TabHelper {
 	 *            A unique tag to associate with the tab and associated fragment
 	 * @return CompatTab for the appropriate android version
 	 */
-	public CompatTab newTab(String tag) {
-		if (IS_HONEYCOMB) {
-			return new CompatTabHoneycomb(mActivity, tag);
+	public CompatTab newTab(String tag, int position) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			return new CompatTabHoneycomb(mActivity, tag, position);
 		} else {
-			return new CompatTabEclair(mActivity, tag);
+			return new CompatTabEclair(mActivity, tag, position);
 		}
 	}
 
@@ -83,4 +81,12 @@ public abstract class TabHelper {
 	public abstract void onRestoreInstanceState(Bundle savedInstanceState);
 
 	public abstract void setUp();
+
+	/**
+	 * When swiping between pages, select the corresponding tab.
+	 * 
+	 * @param position
+	 *            - the position of the new section within the {@link ViewPager}
+	 */
+	public abstract void setSelectedTab(int position);
 }

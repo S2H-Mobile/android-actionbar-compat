@@ -16,7 +16,7 @@
 
 package de.s2hmobile.compat.tab;
 
-import de.s2hmobile.compat.ActionBarTabActivity;
+import de.s2hmobile.compat.TabActivityBase;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.os.Build;
@@ -27,13 +27,13 @@ import android.support.v4.app.FragmentTransaction;
 
 /**
  * Helper class to build tabs on Honeycomb. Call
- * {@link ActionBarTabActivity#getTabHelper()} to get the generic instance for
+ * {@link TabActivityBase#getTabHelper()} to get the generic instance for
  * compatibility with older versions.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class TabHelperHoneycomb extends TabHelper {
 
-	ActionBar mActionBar;
+	private ActionBar mActionBar = null;
 
 	protected TabHelperHoneycomb(FragmentActivity activity) {
 		super(activity);
@@ -85,6 +85,11 @@ public class TabHelperHoneycomb extends TabHelper {
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		int position = savedInstanceState.getInt("tab_position");
+		mActionBar.setSelectedNavigationItem(position);
+	}
+
+	@Override
+	public void setSelectedTab(int position) {
 		mActionBar.setSelectedNavigationItem(position);
 	}
 }

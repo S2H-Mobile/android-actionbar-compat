@@ -28,13 +28,17 @@ import android.support.v4.app.FragmentActivity;
 public abstract class CompatTab {
 	final FragmentActivity mActivity;
 	final String mTag;
+	final int mPosition;
 
-	protected CompatTab(FragmentActivity activity, String tag) {
+	protected CompatTab(FragmentActivity activity, String tag, int position) {
 		mActivity = activity;
 		mTag = tag;
+		mPosition = position;
 	}
 
 	public abstract CompatTab setText(int resId);
+	
+	public abstract CompatTab setText(CharSequence title);
 
 	public abstract CompatTab setIcon(int resId);
 
@@ -54,5 +58,9 @@ public abstract class CompatTab {
 
 	public String getTag() {
 		return mTag;
+	}
+
+	public int getPosition(){
+		return mPosition;
 	}
 }

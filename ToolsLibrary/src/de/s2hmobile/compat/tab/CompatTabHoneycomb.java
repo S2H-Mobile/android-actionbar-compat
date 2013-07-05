@@ -16,9 +16,11 @@
 
 package de.s2hmobile.compat.tab;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -27,18 +29,20 @@ import android.support.v4.app.FragmentTransaction;
  * An implementation of the {@link CompatTab} interface that relies on API 11
  * APIs.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class CompatTabHoneycomb extends CompatTab implements
 		ActionBar.TabListener {
 
-	/**
-	 * The native tab object that this {@link CompatTab} acts as a proxy for.
-	 */
-	ActionBar.Tab mTab;
-	CompatTabListener mCallback;
-	Fragment mFragment;
+	/** The native tab object that {@link CompatTab} acts as a proxy for. */
+	private final ActionBar.Tab mTab;
+	
+	private CompatTabListener mCallback = null;
+	
+	private Fragment mFragment = null;
 
-	protected CompatTabHoneycomb(FragmentActivity activity, String tag) {
-		super(activity, tag);
+	protected CompatTabHoneycomb(FragmentActivity activity, String tag,
+			int position) {
+		super(activity, tag, position);
 		mTab = activity.getActionBar().newTab();
 	}
 
@@ -117,5 +121,11 @@ public class CompatTabHoneycomb extends CompatTab implements
 	@Override
 	public Fragment getFragment() {
 		return mFragment;
+	}
+
+	@Override
+	public CompatTab setText(CharSequence title) {
+		mTab.setText(title);
+		return this;
 	}
 }

@@ -3,12 +3,13 @@ package de.s2hmobile.compat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import de.s2hmobile.compat.tab.CompatTab;
 import de.s2hmobile.compat.tab.CompatTabListener;
 
-public abstract class ActionBarTabActivity extends TabActivityBase {
+public abstract class ActionBarTabSwipeActivity extends TabActivityBase {
 
-	public static class ActionBarTabListener<T extends Fragment> implements
+	public class ActionBarTabSwipeListener<T extends Fragment> implements
 			CompatTabListener {
 
 		private final TabActivityBase mActivity;
@@ -26,8 +27,8 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 		 * @param args
 		 *            Arguments for the fragment
 		 */
-		public ActionBarTabListener(TabActivityBase activity, Class<T> clz,
-				Bundle args) {
+		public ActionBarTabSwipeListener(TabActivityBase activity,
+				Class<T> clz, Bundle args) {
 			mActivity = activity;
 			mFragmentClass = clz;
 			mArgs = args;
@@ -46,6 +47,11 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 		 */
 		@Override
 		public void onTabSelected(CompatTab tab, FragmentTransaction ft) {
+
+			// When the tab is selected, switch to the
+			// corresponding page in the ViewPager.
+			mViewPager.setCurrentItem(tab.getPosition());
+
 			Fragment fragment = tab.getFragment();
 			if (fragment == null) {
 				fragment = Fragment.instantiate(mActivity,
@@ -71,10 +77,24 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 		}
 	}
 
+	protected ViewPager mViewPager = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tab_compat);
-	}
+		setContentView(R.layout.tab_compat_pager);
 
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						// When swiping between pages, select the
+						// corresponding tab.
+						// getActionBar().setSelectedNavigationItem(position);
+						getTabHelper().setSelectedTab(position);
+					}
+				});
+
+	}
 }

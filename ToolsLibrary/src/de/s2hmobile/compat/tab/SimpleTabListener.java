@@ -1,6 +1,6 @@
 package de.s2hmobile.compat.tab;
 
-import de.s2hmobile.compat.ActionBarTabActivity;
+import de.s2hmobile.compat.TabActivityBase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentTransaction;
  */
 public class SimpleTabListener implements CompatTabListener {
 
-	private final ActionBarTabActivity mActivity;
+	private final TabActivityBase mActivity;
 	private final Class<? extends Fragment> mClass;
 
 	/**
@@ -22,7 +22,7 @@ public class SimpleTabListener implements CompatTabListener {
 	 * @param cls
 	 *            The class representing the fragment to instantiate
 	 */
-	public SimpleTabListener(ActionBarTabActivity activity,
+	public SimpleTabListener(TabActivityBase activity,
 			Class<? extends Fragment> cls) {
 		mActivity = activity;
 		mClass = cls;
