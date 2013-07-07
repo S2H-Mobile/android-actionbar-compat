@@ -17,6 +17,7 @@
 package de.s2hmobile.compat.tab;
 
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -36,8 +37,24 @@ public abstract class CompatTab {
 		mPosition = position;
 	}
 
+	/**
+	 * Create a new tab.
+	 * 
+	 * @param tag
+	 *            A unique tag to associate with the tab and associated fragment
+	 * @return CompatTab for the appropriate android version
+	 */
+	public static CompatTab newTab(FragmentActivity activity, String tag,
+			int position) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			return new CompatTabHoneycomb(activity, tag, position);
+		} else {
+			return new CompatTabEclair(activity, tag, position);
+		}
+	}
+
 	public abstract CompatTab setText(int resId);
-	
+
 	public abstract CompatTab setText(CharSequence title);
 
 	public abstract CompatTab setIcon(int resId);
@@ -60,7 +77,7 @@ public abstract class CompatTab {
 		return mTag;
 	}
 
-	public int getPosition(){
+	public int getPosition() {
 		return mPosition;
 	}
 }

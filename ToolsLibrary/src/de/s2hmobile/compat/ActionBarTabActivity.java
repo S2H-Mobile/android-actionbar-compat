@@ -8,51 +8,63 @@ import de.s2hmobile.compat.tab.CompatTabListener;
 
 public abstract class ActionBarTabActivity extends TabActivityBase {
 
-	public static class ActionBarTabListener<T extends Fragment> implements
-			CompatTabListener {
+	/**
+	 * Implementation of {@link CompatTabListener} to handle tab change events.
+	 * This implementation instantiates the specified fragment class with no
+	 * arguments when its tab is selected.
+	 */
+	public static class ActionBarTabListener implements CompatTabListener {
 
-		private final TabActivityBase mActivity;
-		private final Bundle mArgs;
-		private final int mContainerId;
-		private final Class<T> mFragmentClass;
+		private final ActionBarTabActivity mActivity;
+		private final Class<? extends Fragment> mFragmentClass;
 
 		/**
 		 * Constructor used each time a new tab is created.
 		 * 
 		 * @param activity
-		 *            The host Activity, used to instantiate the fragment
+		 *            - the host Activity, used to instantiate the fragment
 		 * @param clz
-		 *            The fragment's Class, used to instantiate the fragment
-		 * @param args
-		 *            Arguments for the fragment
+		 *            - the fragment class, used to instantiate the fragment
 		 */
-		public ActionBarTabListener(TabActivityBase activity, Class<T> clz,
-				Bundle args) {
+		public ActionBarTabListener(ActionBarTabActivity activity,
+				Class<? extends Fragment> clz) {
 			mActivity = activity;
 			mFragmentClass = clz;
-			mArgs = args;
-			mContainerId = android.R.id.tabcontent;
-			// Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-			// ? android.R.id.content // Honeycomb and above
-			// : R.id.realtabcontent; // Froyo and Gingerbread
 		}
 
 		@Override
 		public void onTabReselected(CompatTab tab, FragmentTransaction ft) {
 		}
 
-		/**
-		 * Instantiates the tab fragment when necessary.
-		 */
+		/** Instantiates the tab fragment when necessary. */
 		@Override
 		public void onTabSelected(CompatTab tab, FragmentTransaction ft) {
+
+			// check if fragment is already initialized
 			Fragment fragment = tab.getFragment();
 			if (fragment == null) {
+
+				// instantiate and add the fragment to the activity
 				fragment = Fragment.instantiate(mActivity,
-						mFragmentClass.getName(), mArgs);
+						mFragmentClass.getName());
+
+				// TODO remove log statement
+				android.util.Log.i("ActionBarTabActivity", "instantiating "
+						+ mFragmentClass.getName());
+
 				tab.setFragment(fragment);
+
+				// set animation
 				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-				ft.add(mContainerId, fragment, tab.getTag());
+
+				/*
+				 * The training class proposed to select the id of the view
+				 * according to platform version.
+				 * 
+				 * Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
+				 * android.R.id.content : R.id.tabcontent;
+				 */
+				ft.add(android.R.id.tabcontent, fragment, tab.getTag());
 			} else {
 
 				// if fragment exists, attach it in order to show it
@@ -62,7 +74,7 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 
 		@Override
 		public void onTabUnselected(CompatTab tab, FragmentTransaction ft) {
-			Fragment fragment = tab.getFragment();
+			final Fragment fragment = tab.getFragment();
 			if (fragment != null) {
 
 				// detach the fragment, because another one is being attached
@@ -76,5 +88,4 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tab_compat);
 	}
-
 }

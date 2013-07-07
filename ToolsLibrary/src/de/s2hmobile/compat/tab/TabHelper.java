@@ -20,7 +20,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import de.s2hmobile.compat.TabActivityBase;
 
 /**
  * Convenience helper to build a set of tabs for a {@link TabActivityBase}. To
@@ -59,21 +58,6 @@ public abstract class TabHelper {
 		}
 	}
 
-	/**
-	 * Create a new tab.
-	 * 
-	 * @param tag
-	 *            A unique tag to associate with the tab and associated fragment
-	 * @return CompatTab for the appropriate android version
-	 */
-	public CompatTab newTab(String tag, int position) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			return new CompatTabHoneycomb(mActivity, tag, position);
-		} else {
-			return new CompatTabEclair(mActivity, tag, position);
-		}
-	}
-
 	public abstract void addTab(CompatTab tab);
 
 	public abstract void onSaveInstanceState(Bundle outState);
@@ -83,7 +67,9 @@ public abstract class TabHelper {
 	public abstract void setUp();
 
 	/**
-	 * When swiping between pages, select the corresponding tab.
+	 * Call trough from
+	 * {@link ViewPager.SimpleOnPageChangeListener#onPageSelected(int)}. When
+	 * swiping between pages, select the corresponding tab.
 	 * 
 	 * @param position
 	 *            - the position of the new section within the {@link ViewPager}

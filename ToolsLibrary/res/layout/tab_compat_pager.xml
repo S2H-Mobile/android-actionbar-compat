@@ -35,7 +35,10 @@
             android:layout_weight="0"
             android:orientation="horizontal" />
 
-        <!-- Fragments inflate their layout into this container. -->
+		<!--
+			Fragments inflate their layout into this container.
+			We assign the system id for tab content to it.
+		-->
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="0dp"

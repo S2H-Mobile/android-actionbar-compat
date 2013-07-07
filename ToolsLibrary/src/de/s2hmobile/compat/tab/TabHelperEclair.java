@@ -19,14 +19,16 @@ package de.s2hmobile.compat.tab;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
-import de.s2hmobile.compat.TabActivityBase;
+import android.widget.TabWidget;
 
 /**
  * This is a helper class to build tabs on pre-Honeycomb. Call
@@ -46,28 +48,37 @@ public class TabHelperEclair extends TabHelper implements
 		TabHost.OnTabChangeListener {
 
 	/**
-	 * Create empty view as tabcontent for backwards-compatibility.
+	 * Creates empty views as dummy content for the {@link TabSpec} part of the
+	 * {@link TabHost}.
 	 */
 	static class DummyTabFactory implements TabHost.TabContentFactory {
 
 		private final Context mContext;
 
-		public DummyTabFactory(Context context) {
+		DummyTabFactory(Context context) {
 			mContext = context;
 		}
 
 		@Override
 		public View createTabContent(String tag) {
-			View v = new View(mContext);
+			final View v = new View(mContext);
 			v.setMinimumWidth(0);
 			v.setMinimumHeight(0);
 			return v;
 		}
 	}
 
-	CompatTabListener mCallback;
-	CompatTab mLastTab;
-	private TabHost mTabHost;
+	/**
+	 * Key for saving the tag of the currently selected tab in the instance
+	 * state {@link Bundle}.
+	 */
+	private static final String KEY_CURRENT_TAB = "tag_current_tab";
+
+	// CompatTabListener mCallback;
+	private CompatTab mLastTab = null;
+
+	// TODO almost all methods rely on setUp() been called first
+	private TabHost mTabHost = null;
 
 	private final HashMap<String, CompatTab> mTabs = new HashMap<String, CompatTab>();
 
@@ -75,55 +86,67 @@ public class TabHelperEclair extends TabHelper implements
 		super(activity);
 	}
 
+	/**
+	 * Converts the data from a {@link CompatTab} to a {@link TabSpec} object.
+	 */
 	@Override
 	public void addTab(CompatTab tab) {
-		String tag = tab.getTag();
-		TabSpec spec;
 
-		if (tab.getIcon() != null) {
-			spec = mTabHost.newTabSpec(tag).setIndicator(tab.getText(),
-					tab.getIcon());
+		// get the data
+		final String tag = tab.getTag();
+		final Drawable icon = tab.getIcon();
+		final CharSequence label = tab.getText();
+
+		// specify the properties of the tab
+		final TabSpec spec = mTabHost.newTabSpec(tag);
+
+		// set icon and label
+		if (icon != null) {
+			spec.setIndicator(label, icon);
 		} else {
-			spec = mTabHost.newTabSpec(tag).setIndicator(tab.getText());
+			spec.setIndicator(label);
 		}
 
+		// we have to provide tab content
 		spec.setContent(new DummyTabFactory(mActivity));
 
 		// Check to see if we already have a fragment for this tab, probably
 		// from a previously saved state. If so, deactivate it, because our
 		// initial state is that a tab isn't shown.
 
-		Fragment fragment = mActivity.getSupportFragmentManager()
+		final Fragment fragment = mActivity.getSupportFragmentManager()
 				.findFragmentByTag(tag);
 		tab.setFragment(fragment);
 
 		if (fragment != null && !fragment.isDetached()) {
 			FragmentTransaction ft = mActivity.getSupportFragmentManager()
 					.beginTransaction();
+//			TODO remove log statement
+			android.util.Log.i("TabHelperEclair", "detaching fragment "
+					+ fragment.getTag());
+
 			ft.detach(fragment);
 			ft.commit();
 		}
 
+		// put the new entry to the tab list
 		mTabs.put(tag, tab);
+		
+		// add the tab to the host
 		mTabHost.addTab(spec);
 	}
 
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
-			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
+			mTabHost.setCurrentTabByTag(savedInstanceState
+					.getString(KEY_CURRENT_TAB));
 		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		// Save and restore the selected tab for rotations/restarts.
-		if (mTabHost != null) {
-			// TODO debug, replace hardcoded string "tab"
-			outState.putString("tab", mTabHost.getCurrentTabTag());
-		} else {
-			android.util.Log.w("TabHelperEclair", "mTabHost is null!!");
-		}
+		outState.putString(KEY_CURRENT_TAB, mTabHost.getCurrentTabTag());
 	}
 
 	/**
@@ -132,6 +155,8 @@ public class TabHelperEclair extends TabHelper implements
 	 */
 	@Override
 	public void onTabChanged(String tabId) {
+		
+//		TODO
 		CompatTab newTab = mTabs.get(tabId);
 		FragmentTransaction ft = mActivity.getSupportFragmentManager()
 				.beginTransaction();
@@ -165,7 +190,23 @@ public class TabHelperEclair extends TabHelper implements
 	 */
 	@Override
 	public void setSelectedTab(int position) {
-		mTabHost.setCurrentTab(position);
+//		TODO taken from FragmentTabsPager in support v4 demos
+		
+		// Unfortunately when TabHost changes the current tab, it kindly
+        // also takes care of putting focus on it when not in touch mode.
+        // The jerk.
+        // This hack tries to prevent this from pulling focus out of our
+        // ViewPager.
+        final TabWidget widget = mTabHost.getTabWidget();
+        final int oldFocusability = widget.getDescendantFocusability();
+        widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        
+        
+        mTabHost.setCurrentTab(position);
+        
+        widget.setDescendantFocusability(oldFocusability);
+		
+		
 	}
 
 	@Override
@@ -173,7 +214,7 @@ public class TabHelperEclair extends TabHelper implements
 		if (mTabHost == null) {
 			mTabHost = (TabHost) mActivity.findViewById(android.R.id.tabhost);
 			mTabHost.setup();
-			mTabHost.setOnTabChangedListener(this);
+			mTabHost.setOnTabChangedListener(TabHelperEclair.this);
 		}
 	}
 }

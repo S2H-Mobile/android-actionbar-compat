@@ -16,7 +16,6 @@
 
 package de.s2hmobile.compat.tab;
 
-import de.s2hmobile.compat.TabActivityBase;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.os.Build;
@@ -33,6 +32,12 @@ import android.support.v4.app.FragmentTransaction;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class TabHelperHoneycomb extends TabHelper {
 
+	/**
+	 * Key for saving the position of the currently selected tab in the instance
+	 * state {@link Bundle}.
+	 */
+	private static final String KEY_CURRENT_TAB = "position_current_tab";
+
 	private ActionBar mActionBar = null;
 
 	protected TabHelperHoneycomb(FragmentActivity activity) {
@@ -40,27 +45,19 @@ public class TabHelperHoneycomb extends TabHelper {
 	}
 
 	@Override
-	public void setUp() {
-		if (mActionBar == null) {
-			mActionBar = mActivity.getActionBar();
-			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		}
-	}
-
-	@Override
 	public void addTab(CompatTab tab) {
-		String tag = tab.getTag();
 
 		// Check to see if we already have a fragment for this tab, probably
 		// from a previously saved state. If so, deactivate it, because our
 		// initial state is that a tab isn't shown.
-
-		Fragment fragment = mActivity.getSupportFragmentManager()
-				.findFragmentByTag(tag);
+		final Fragment fragment = mActivity.getSupportFragmentManager()
+				.findFragmentByTag(tab.getTag());
 		tab.setFragment(fragment);
 
 		if (fragment != null && !fragment.isDetached()) {
-			FragmentTransaction ft = mActivity.getSupportFragmentManager()
+			// TODO remove log statement
+			android.util.Log.i("TabHelperHoneycomb", "addTab() detaches fragment");
+			final FragmentTransaction ft = mActivity.getSupportFragmentManager()
 					.beginTransaction();
 			ft.detach(fragment);
 			ft.commit();
@@ -68,7 +65,7 @@ public class TabHelperHoneycomb extends TabHelper {
 
 		if (tab.getCallback() == null) {
 			throw new IllegalStateException(
-					"CompatTab must have a CompatTabListener");
+					"CompatTab must have a CompatTabListener.");
 		}
 
 		// We know tab is a CompatTabHoneycomb instance, so its
@@ -77,19 +74,27 @@ public class TabHelperHoneycomb extends TabHelper {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		int position = mActionBar.getSelectedTab().getPosition();
-		outState.putInt("tab_position", position);
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		final int position = savedInstanceState.getInt(KEY_CURRENT_TAB);
+		mActionBar.setSelectedNavigationItem(position);
 	}
 
 	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		int position = savedInstanceState.getInt("tab_position");
-		mActionBar.setSelectedNavigationItem(position);
+	public void onSaveInstanceState(Bundle outState) {
+		final int position = mActionBar.getSelectedTab().getPosition();
+		outState.putInt(KEY_CURRENT_TAB, position);
 	}
 
 	@Override
 	public void setSelectedTab(int position) {
 		mActionBar.setSelectedNavigationItem(position);
+	}
+
+	@Override
+	public void setUp() {
+		if (mActionBar == null) {
+			mActionBar = mActivity.getActionBar();
+			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		}
 	}
 }

@@ -17,6 +17,7 @@
   limitations under the License.
 -->
 
+
 <!-- This layout is for API level 5-10 only. -->
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
@@ -33,7 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Fragments inflate their layout into this container. -->
+		<!--
+			Fragments inflate their layout into this container.
+			We assign the system id for tab content to it.
+		-->
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="match_parent"

@@ -18,27 +18,21 @@
 package de.s2hmobile.compat;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import de.s2hmobile.compat.tab.CompatTab;
 import de.s2hmobile.compat.tab.TabHelper;
 
 /**
- * A base activity that defers tab functionality to a {@link TabHelper}.
- * 
- * When building an activity with tabs, extend this class in order to provide
- * compatibility with API level 5 and above. Using this class along with the
- * {@link TabHelper} and {@link com.example.android.tabcompat.lib.CompatTab}
- * classes, you can build a tab UI that's built using the
- * {@link android.app.ActionBar} on Honeycomb+ and the
- * {@link android.widget.TabWidget} on all older versions.
- * 
- * The {@link TabHelper} APIs obfuscate all the compatibility work for you.
+ * A base activity that defers tab functionality to a {@link TabHelper}. It
+ * obfuscates all the compatibility work for you.
  */
-public abstract class TabActivityBase extends ActionBarFragmentActivity {
+abstract class TabActivityBase extends ActionBarFragmentActivity {
 
 	/**
 	 * In this implementation, the argument for the
 	 * {@link TabHelper#createInstance(android.support.v4.app.FragmentActivity)}
 	 * is the same as in the sample library. Alternatively we could provide the
-	 * parent or derived activities.
+	 * parent of this class or one of its derived activities.
 	 * <p>
 	 * 
 	 * <code>FragmentActivity parent = TabActivityBase.this.getParent();</code>
@@ -46,7 +40,29 @@ public abstract class TabActivityBase extends ActionBarFragmentActivity {
 	 * <code>private mTabHelper = TabHelper.createInstance(parent);</code>
 	 */
 	private final TabHelper mTabHelper = TabHelper
-			.createInstance(TabActivityBase.this);
+			.createInstance(getActivity());
+
+	/**
+	 * Convenience method to create a {@link CompatTab}.
+	 * 
+	 * @param tag
+	 *            - name of the fragment
+	 * @param position
+	 *            - position of the fragment within the pager
+	 * @return The {@link CompatTab} object.
+	 */
+	protected CompatTab createTab(String tag, int position) {
+		return CompatTab.newTab(getActivity(), tag, position);
+	}
+
+	/**
+	 * Get an instance of this activity. The factory methods of
+	 * {@link TabHelper} and the {@link CompatTab} need to use the same instance
+	 * of {@link FragmentActivity}.
+	 * 
+	 * @return This activity.
+	 */
+	protected abstract FragmentActivity getActivity();
 
 	/** @return The {@link TabHelper} for this activity. */
 	protected TabHelper getTabHelper() {

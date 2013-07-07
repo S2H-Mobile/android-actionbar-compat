@@ -32,13 +32,15 @@ import android.view.View;
  */
 public class SimpleMenuItem implements MenuItem {
 
-	private SimpleMenu mMenu;
+	private final SimpleMenu mMenu;
 
 	private final int mId;
 	private final int mOrder;
-	private CharSequence mTitle;
-	private CharSequence mTitleCondensed;
-	private Drawable mIconDrawable;
+	
+	private CharSequence mTitle = null;
+	private CharSequence mTitleCondensed = null;
+	private Drawable mIconDrawable = null;
+	
 	private int mIconResId = 0;
 	private boolean mEnabled = true;
 
@@ -112,8 +114,7 @@ public class SimpleMenuItem implements MenuItem {
 		return mEnabled;
 	}
 
-	// No-op operations. We use no-ops to allow inflation from menu XML.
-
+	// We use no-ops to allow inflation from menu XML.
 	public int getGroupId() {
 		// Noop
 		return 0;
