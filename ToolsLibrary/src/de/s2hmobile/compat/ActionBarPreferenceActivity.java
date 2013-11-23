@@ -39,31 +39,10 @@ public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
 			.createInstance(ActionBarPreferenceActivity.this, isHomeStateful());
 
-	/**
-	 * Returns the {@link ActionBarHelper} for this activity.
-	 */
-	protected ActionBarHelper getActionBarHelper() {
-		return mActionBarHelper;
-	}
-
 	/** {@inheritDoc} */
 	@Override
 	public MenuInflater getMenuInflater() {
 		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		mActionBarHelper.onCreate(savedInstanceState);
-		super.onCreate(savedInstanceState);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		mActionBarHelper.onPostCreate(savedInstanceState);
 	}
 
 	/**
@@ -73,17 +52,38 @@ public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 	 * Note: marking menu items as invisible/visible is not currently supported.
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		boolean retValue = false;
 		retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
 		retValue |= super.onCreateOptionsMenu(menu);
 		return retValue;
 	}
 
+	/**
+	 * Returns the {@link ActionBarHelper} for this activity.
+	 */
+	protected ActionBarHelper getActionBarHelper() {
+		return mActionBarHelper;
+	}
+
 	/** {@inheritDoc} */
 	@Override
-	protected void onTitleChanged(CharSequence title, int color) {
-		mActionBarHelper.onTitleChanged(title, color);
+	protected void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mActionBarHelper.onCreate(savedInstanceState);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void onPostCreate(final Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mActionBarHelper.onPostCreate(savedInstanceState);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void onTitleChanged(final CharSequence title, final int color) {
 		super.onTitleChanged(title, color);
+		mActionBarHelper.onTitleChanged(title, color);
 	}
 }

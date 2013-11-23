@@ -32,7 +32,6 @@
         <item name="actionbarCompatItemStatefulHomeStyle">@style/ActionBarCompatItemStatefulHome</item>
         <item name="actionbarCompatItemHomeStyle">@style/ActionBarCompatItemHome</item>
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
-        <!-- <item name="android:tabWidgetStyle">@style/CustomTabWidget</item> -->
     </style>
 
     <style name="AppBaseThemeDark" parent="android:style/Theme.Holo">
@@ -44,7 +43,6 @@
         <item name="actionbarCompatItemStatefulHomeStyle">@style/ActionBarCompatItemStatefulHome</item>
         <item name="actionbarCompatItemHomeStyle">@style/ActionBarCompatItemHome</item>
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
-        <!-- <item name="android:tabWidgetStyle">@style/CustomTabWidget</item> -->
     </style>
 
     <!-- Styles for the compat ActionBar. -->

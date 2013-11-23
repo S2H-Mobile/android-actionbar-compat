@@ -20,10 +20,12 @@
 
     <style name="ActionBarTitleLight" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/actionbar_title_light</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
-    
+
     <style name="ActionBarTitleDark" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/actionbar_title_dark</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
 
 </resources>

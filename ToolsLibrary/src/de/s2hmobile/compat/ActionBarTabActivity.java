@@ -22,23 +22,27 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 		 * Constructor used each time a new tab is created.
 		 * 
 		 * @param activity
-		 *            - the host Activity, used to instantiate the fragment
+		 *            - reference to the host activity, used to instantiate the
+		 *            fragment
 		 * @param clz
-		 *            - the fragment class, used to instantiate the fragment
+		 *            - reference to the fragment class, used to instantiate the
+		 *            fragment
 		 */
-		public ActionBarTabListener(ActionBarTabActivity activity,
-				Class<? extends Fragment> clz) {
+		public ActionBarTabListener(final ActionBarTabActivity activity,
+				final Class<? extends Fragment> clz) {
 			mActivity = activity;
 			mFragmentClass = clz;
 		}
 
 		@Override
-		public void onTabReselected(CompatTab tab, FragmentTransaction ft) {
+		public void onTabReselected(final CompatTab tab,
+				final FragmentTransaction ft) {
 		}
 
 		/** Instantiates the tab fragment when necessary. */
 		@Override
-		public void onTabSelected(CompatTab tab, FragmentTransaction ft) {
+		public void onTabSelected(final CompatTab tab,
+				final FragmentTransaction ft) {
 
 			// check if fragment is already initialized
 			Fragment fragment = tab.getFragment();
@@ -73,7 +77,8 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 		}
 
 		@Override
-		public void onTabUnselected(CompatTab tab, FragmentTransaction ft) {
+		public void onTabUnselected(final CompatTab tab,
+				final FragmentTransaction ft) {
 			final Fragment fragment = tab.getFragment();
 			if (fragment != null) {
 
@@ -84,7 +89,7 @@ public abstract class ActionBarTabActivity extends TabActivityBase {
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tab_compat);
 	}

@@ -11,27 +11,12 @@ import de.s2hmobile.compat.tab.SectionsPagerAdapter;
 import de.s2hmobile.compat.tab.TabHelper;
 
 /**
- * Extend this class if you want the FixedTabs+Swipe pattern. This class
- * implements {@link CompatTabListener} to handle tab change events.
- * 
- * A base activity that defers tab functionality to a {@link TabHelper}.
- * 
- * When building an activity with tabs, extend this class in order to provide
- * compatibility with API level 5 and above. Using this class along with the
- * {@link TabHelper} and {@link com.example.android.tabcompat.lib.CompatTab}
- * classes
- * 
- * 
- * You can make use of a tab UI that's built using the
- * {@link android.app.ActionBar} on Honeycomb+ and the
- * {@link android.widget.TabWidget} on all older versions.
- * 
- * 
+ * Extend this class for an activity that supports the fixed tabs and swipe
+ * navigation pattern. This class implements the {@link CompatTabListener}
+ * interface to handle tab change events.
  * 
  * @author Stephan Hoehne
- * 
  */
-// TODO improve documentation
 public abstract class ActionBarTabSwipeActivity extends TabActivityBase
 		implements CompatTabListener {
 
@@ -67,7 +52,8 @@ public abstract class ActionBarTabSwipeActivity extends TabActivityBase
 	}
 
 	@Override
-	public void onTabReselected(CompatTab tab, FragmentTransaction ft) {
+	public void onTabReselected(final CompatTab tab,
+			final FragmentTransaction ft) {
 	}
 
 	/**
@@ -76,12 +62,13 @@ public abstract class ActionBarTabSwipeActivity extends TabActivityBase
 	 * {@link ViewPager}.
 	 */
 	@Override
-	public void onTabSelected(CompatTab tab, FragmentTransaction ft) {
+	public void onTabSelected(final CompatTab tab, final FragmentTransaction ft) {
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
 	@Override
-	public void onTabUnselected(CompatTab tab, FragmentTransaction ft) {
+	public void onTabUnselected(final CompatTab tab,
+			final FragmentTransaction ft) {
 		final Fragment fragment = tab.getFragment();
 		if (fragment != null) {
 
@@ -96,7 +83,7 @@ public abstract class ActionBarTabSwipeActivity extends TabActivityBase
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tab_compat_pager);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -140,7 +127,7 @@ public abstract class ActionBarTabSwipeActivity extends TabActivityBase
 		final OnPageChangeListener listener = new ViewPager.SimpleOnPageChangeListener() {
 
 			@Override
-			public void onPageSelected(int position) {
+			public void onPageSelected(final int position) {
 
 				// select the tab corresponding to the new page
 				getTabHelper().setSelectedTab(position);
@@ -150,5 +137,5 @@ public abstract class ActionBarTabSwipeActivity extends TabActivityBase
 		mViewPager.setOnPageChangeListener(listener);
 	}
 
-	protected abstract void declareSections(SectionsPagerAdapter adapter);
+	protected abstract void declareSections(final SectionsPagerAdapter adapter);
 }
