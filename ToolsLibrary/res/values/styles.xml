@@ -45,7 +45,7 @@
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
     </style>
 
-    <!-- Styles for the compat ActionBar. -->
+    <!-- Styles for ActionBarCompat. -->
     <style name="ActionBarCompatLight">
         <item name="android:background">@color/actionbar_background_light</item>
     </style>
