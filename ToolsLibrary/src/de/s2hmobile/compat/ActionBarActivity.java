@@ -17,12 +17,12 @@
 
 package de.s2hmobile.compat;
 
-import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
-import de.s2hmobile.compat.actionbar.ActionBarHelper;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
+import de.s2hmobile.compat.actionbar.ActionBarHelper;
 
 /**
  * A base activity that defers common ActionBar functionality across app
@@ -50,26 +50,12 @@ public abstract class ActionBarActivity extends Activity implements
 		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mActionBarHelper.onCreate(savedInstanceState);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		mActionBarHelper.onPostCreate(savedInstanceState);
-	}
-
 	/**
 	 * Base action bar-aware implementation for
 	 * {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		boolean retValue = false;
 		retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
 		retValue |= super.onCreateOptionsMenu(menu);
@@ -78,7 +64,21 @@ public abstract class ActionBarActivity extends Activity implements
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onTitleChanged(CharSequence title, int color) {
+	protected void onCreate(final Bundle savedInstanceState) {
+		mActionBarHelper.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void onPostCreate(final Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mActionBarHelper.onPostCreate(savedInstanceState);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void onTitleChanged(final CharSequence title, final int color) {
 		mActionBarHelper.onTitleChanged(title, color);
 		super.onTitleChanged(title, color);
 	}

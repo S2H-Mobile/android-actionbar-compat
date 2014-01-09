@@ -69,8 +69,8 @@ public abstract class ActionBarAuthenticatorActivity extends
 	/** {@inheritDoc} */
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		mActionBarHelper.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 	}
 
 	/** {@inheritDoc} */

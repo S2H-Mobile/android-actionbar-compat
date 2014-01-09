@@ -17,13 +17,13 @@
 
 package de.s2hmobile.compat;
 
-import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
-import de.s2hmobile.compat.actionbar.ActionBarHelper;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import de.s2hmobile.compat.actionbar.ActionBarConfigurator;
+import de.s2hmobile.compat.actionbar.ActionBarHelper;
 
 /**
  * A base activity that defers all ActionBar functionality across derived
@@ -51,22 +51,8 @@ public abstract class ActionBarFragmentActivity extends FragmentActivity
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mActionBarHelper.onCreate(savedInstanceState);
-	}
-
-	/** {@inheritDoc} */
-	@Override
 	public MenuInflater getMenuInflater() {
 		return mActionBarHelper.getMenuInflater(super.getMenuInflater());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		mActionBarHelper.onPostCreate(savedInstanceState);
 	}
 
 	/**
@@ -76,7 +62,7 @@ public abstract class ActionBarFragmentActivity extends FragmentActivity
 	 * Note: marking menu items as invisible/visible is not currently supported.
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		boolean retValue = false;
 		retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
 		retValue |= super.onCreateOptionsMenu(menu);
@@ -85,7 +71,21 @@ public abstract class ActionBarFragmentActivity extends FragmentActivity
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onTitleChanged(CharSequence title, int color) {
+	protected void onCreate(final Bundle savedInstanceState) {
+		mActionBarHelper.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void onPostCreate(final Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mActionBarHelper.onPostCreate(savedInstanceState);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void onTitleChanged(final CharSequence title, final int color) {
 		mActionBarHelper.onTitleChanged(title, color);
 		super.onTitleChanged(title, color);
 	}
