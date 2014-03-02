@@ -119,7 +119,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 			}
 		}
 	}
-	
+
 	private static final String MENU_ATTRIBUTE = "showAsAction";
 	private static final String MENU_ID = "id";
 
@@ -135,6 +135,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	 * Returns a {@link android.view.MenuInflater} that can read action bar
 	 * metadata on pre-Honeycomb devices.
 	 */
+	@Override
 	public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
 		return new WrappedMenuInflater(mActivity, superMenuInflater);
 	}
@@ -221,6 +222,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		if (actionBar == null) {
 			return null;
 		}
+
 		final int itemId = item.getItemId();
 
 		// choose style depending on type of menu item
@@ -238,14 +240,17 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 				: R.dimen.actionbar_compat_button_width;
 		final int width = (int) res.getDimension(dimenId);
 		final int height = ViewGroup.LayoutParams.MATCH_PARENT;
+
 		actionButton.setLayoutParams(new ViewGroup.LayoutParams(width, height));
 		if (itemId == R.id.menu_refresh) {
 			actionButton.setId(R.id.actionbar_compat_item_refresh);
 		}
+
 		actionButton.setImageDrawable(item.getIcon());
 		actionButton.setScaleType(ImageView.ScaleType.CENTER);
 		actionButton.setContentDescription(item.getTitle());
 		actionButton.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View view) {
 				mActivity
 						.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
@@ -254,23 +259,27 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 		actionBar.addView(actionButton);
 
+		/*
+		 * Refresh buttons should be stateful, and allow for indeterminate
+		 * progress indicators, so add those.
+		 */
 		if (item.getItemId() == R.id.menu_refresh) {
-			// Refresh buttons should be stateful, and allow for indeterminate
-			// progress indicators, so add those.
-			ProgressBar indicator = new ProgressBar(mActivity, null,
+			final ProgressBar indicator = new ProgressBar(mActivity, null,
 					R.attr.actionbarCompatProgressIndicatorStyle);
 
 			final int buttonWidth = res
 					.getDimensionPixelSize(R.dimen.actionbar_compat_button_width);
 			final int buttonHeight = res
 					.getDimensionPixelSize(R.dimen.actionbar_compat_height);
-			final int progressIndicatorWidth = buttonWidth / 2;
+			final int indicatorSize = buttonWidth / 2;
 
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					progressIndicatorWidth, progressIndicatorWidth);
-			params.setMargins((buttonWidth - progressIndicatorWidth) / 2,
-					(buttonHeight - progressIndicatorWidth) / 2,
-					(buttonWidth - progressIndicatorWidth) / 2, 0);
+			final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					indicatorSize, indicatorSize);
+
+			params.setMargins((buttonWidth - indicatorSize) / 2,
+					(buttonHeight - indicatorSize) / 2,
+					(buttonWidth - indicatorSize) / 2, 0);
+
 			indicator.setLayoutParams(params);
 			indicator.setVisibility(View.GONE);
 			indicator.setId(R.id.actionbar_compat_item_refresh_progress);

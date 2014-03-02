@@ -9,10 +9,11 @@ package de.s2hmobile.compat.actionbar;
  * 
  */
 public interface ActionBarConfigurator {
-	
+
 	/**
 	 * Defines the behaviour of the home icon in the action bar.
-	 * @return true if you want the home icon to respond to user action
+	 * 
+	 * @return True if the home icon is to be stateful.
 	 */
 	public boolean isHomeStateful();
 }
