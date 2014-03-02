@@ -19,7 +19,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppBaseThemeLight" parent="android:style/Theme.Light">
+    <style name="AppThemeLight" parent="android:style/Theme.Light">
         <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatLight</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>

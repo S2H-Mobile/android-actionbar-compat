@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="AppBaseThemeLight" parent="android:style/Theme.Holo.Light">
+    <style name="AppThemeLight" parent="android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/ActionBarLight</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
     </style>
