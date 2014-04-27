@@ -21,22 +21,22 @@
 
     <style name="AppThemeLight" parent="android:style/Theme.Light">
         <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
-        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatLight</item>
+        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitleLight</item>
+        <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitle</item>
         <item name="actionbarCompatItemStyle">@style/ActionBarCompatItem</item>
         <item name="actionbarCompatItemStatefulHomeStyle">@style/ActionBarCompatItemStatefulHome</item>
         <item name="actionbarCompatItemHomeStyle">@style/ActionBarCompatItemHome</item>
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
     </style>
 
-    <!-- Styles for ActionBarCompat. -->
-    <style name="ActionBarCompatLight">
-        <item name="android:background">@color/actionbar_background_light</item>
+    <style name="ActionBarCompatBackground">
+        <item name="android:background">@color/actionbar_background</item>
     </style>
 
-    <!-- Styles for the ActionBarCompat title. -->
-    <style name="ActionBarCompatTitleBase">
+    <!-- Style for the title. -->
+    <style name="ActionBarCompatTitle">
+        <item name="android:textColor">@color/text_blue</item>
         <item name="android:id">@id/actionbar_compat_title</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">18sp</item>
@@ -46,11 +46,7 @@
         <item name="android:ellipsize">marquee</item>
     </style>
 
-    <style name="ActionBarCompatTitleLight" parent="style/ActionBarCompatTitleBase">
-        <item name="android:textColor">@color/actionbar_title_light</item>
-    </style>
-
-    <!-- Styles for ActionBarCompat items. -->
+    <!-- Styles for the action items. -->
     <style name="ActionBarCompatItemBase">
         <item name="android:scaleType">center</item>
     </style>
