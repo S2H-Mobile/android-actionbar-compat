@@ -27,7 +27,6 @@
     <style name="ActionBarLight" parent="android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/actionbar_background</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleLight</item>
-        <item name="android:icon">@drawable/ic_home</item>
     </style>
 
     <style name="ActionBarTitleLight">

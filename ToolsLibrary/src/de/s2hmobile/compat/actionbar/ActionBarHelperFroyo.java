@@ -52,13 +52,14 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	private class WrappedMenuInflater extends MenuInflater {
 		MenuInflater mInflater;
 
-		public WrappedMenuInflater(Context context, MenuInflater inflater) {
+		public WrappedMenuInflater(final Context context,
+				final MenuInflater inflater) {
 			super(context);
 			mInflater = inflater;
 		}
 
 		@Override
-		public void inflate(int menuRes, Menu menu) {
+		public void inflate(final int menuRes, final Menu menu) {
 			loadActionBarMetadata(menuRes);
 			mInflater.inflate(menuRes, menu);
 		}
@@ -70,7 +71,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		 * 
 		 * @param menuResId
 		 */
-		private void loadActionBarMetadata(int menuResId) {
+		private void loadActionBarMetadata(final int menuResId) {
 			XmlResourceParser parser = null;
 			try {
 				parser = mActivity.getResources().getXml(menuResId);
@@ -108,9 +109,9 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 					eventType = parser.next();
 				}
-			} catch (XmlPullParserException e) {
+			} catch (final XmlPullParserException e) {
 				throw new InflateException("Error inflating menu XML", e);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new InflateException("Error inflating menu XML", e);
 			} finally {
 				if (parser != null) {
@@ -127,7 +128,8 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
 
-	protected ActionBarHelperFroyo(Activity activity, boolean isHomeStateful) {
+	protected ActionBarHelperFroyo(final Activity activity,
+			final boolean isHomeStateful) {
 		super(activity, isHomeStateful);
 	}
 
@@ -136,13 +138,13 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	 * metadata on pre-Honeycomb devices.
 	 */
 	@Override
-	public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
+	public MenuInflater getMenuInflater(final MenuInflater superMenuInflater) {
 		return new WrappedMenuInflater(mActivity, superMenuInflater);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		mActivity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 	}
 
@@ -152,8 +154,8 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	 * action items from the options menu by marking them as invisible.
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		for (Integer id : mActionItemIds) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		for (final Integer id : mActionItemIds) {
 			menu.findItem(id).setVisible(false);
 		}
 		return true;
@@ -161,7 +163,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 	/** {@inheritDoc} */
 	@Override
-	public void onPostCreate(Bundle savedInstanceState) {
+	public void onPostCreate(final Bundle savedInstanceState) {
 
 		// request custom window title bar
 		mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
@@ -185,8 +187,8 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 	/** {@inheritDoc} */
 	@Override
-	public void onTitleChanged(CharSequence title, int color) {
-		TextView titleView = (TextView) mActivity
+	public void onTitleChanged(final CharSequence title, final int color) {
+		final TextView titleView = (TextView) mActivity
 				.findViewById(R.id.actionbar_compat_title);
 		if (titleView != null) {
 			titleView.setText(title);
@@ -195,7 +197,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setRefreshActionItemState(boolean refreshing) {
+	public void setRefreshActionItemState(final boolean refreshing) {
 		final View refreshButton = mActivity
 				.findViewById(R.id.actionbar_compat_item_refresh);
 		final View refreshIndicator = mActivity
@@ -251,7 +253,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		actionButton.setContentDescription(item.getTitle());
 		actionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view) {
+			public void onClick(final View view) {
 				mActivity
 						.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
 			}
@@ -312,7 +314,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		final SimpleMenu tempMenu = new SimpleMenu(mActivity);
 		final SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu,
 				android.R.id.home, 0, mActivity.getString(R.string.menu_home));
-		homeItem.setIcon(R.drawable.ic_home);
+		// homeItem.setIcon(R.drawable.ic_home);
 		addActionItemCompatFromMenuItem(homeItem);
 
 		// add title text
