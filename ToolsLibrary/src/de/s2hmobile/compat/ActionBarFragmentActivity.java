@@ -39,7 +39,8 @@ public abstract class ActionBarFragmentActivity extends FragmentActivity
 	 * the base activity and the boolean flag as set by the callback.
 	 */
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
-			.createInstance(ActionBarFragmentActivity.this, isHomeStateful());
+			.createInstance(ActionBarFragmentActivity.this, isHomeStateful(),
+					setHomeResId());
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this

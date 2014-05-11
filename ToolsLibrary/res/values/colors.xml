@@ -18,6 +18,6 @@
 	-->
 
 <resources>
-    <color name="text_blue">#ff005761</color>
-    <color name="actionbar_background">#ffeeeeee</color>
+    <color name="actionbar_title">#FF005761</color> <!-- blue -->
+    <color name="actionbar_background">#FFEEEEEE</color> <!-- gray -->
 </resources>

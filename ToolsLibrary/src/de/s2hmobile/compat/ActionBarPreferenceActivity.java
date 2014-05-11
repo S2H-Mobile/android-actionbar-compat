@@ -37,7 +37,8 @@ public abstract class ActionBarPreferenceActivity extends PreferenceActivity
 
 	/** The {@link ActionBarHelper} instance for this base activity. */
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
-			.createInstance(ActionBarPreferenceActivity.this, isHomeStateful());
+			.createInstance(ActionBarPreferenceActivity.this, isHomeStateful(),
+					setHomeResId());
 
 	/** {@inheritDoc} */
 	@Override

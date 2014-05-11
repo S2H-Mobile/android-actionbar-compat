@@ -36,7 +36,7 @@
 
     <!-- Style for the title. -->
     <style name="ActionBarCompatTitle">
-        <item name="android:textColor">@color/text_blue</item>
+        <item name="android:textColor">@color/actionbar_title</item>
         <item name="android:id">@id/actionbar_compat_title</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">18sp</item>

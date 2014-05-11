@@ -35,7 +35,8 @@ public abstract class ActionBarActivity extends Activity implements
 
 	/** The {@link ActionBarHelper} instance for this base activity. */
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
-			.createInstance(ActionBarActivity.this, isHomeStateful());
+			.createInstance(ActionBarActivity.this, isHomeStateful(),
+					setHomeResId());
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this {@link ActionBarActivity}.

@@ -16,4 +16,11 @@ public interface ActionBarConfigurator {
 	 * @return True if the home icon is to be stateful.
 	 */
 	public boolean isHomeStateful();
+
+	/**
+	 * Set the resource id for the home icon in the action bar.
+	 * 
+	 * @return The resource id of the home icon in the action bar.
+	 */
+	public int setHomeResId();
 }

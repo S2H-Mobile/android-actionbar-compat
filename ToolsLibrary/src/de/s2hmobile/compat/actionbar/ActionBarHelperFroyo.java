@@ -129,8 +129,8 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
 
 	protected ActionBarHelperFroyo(final Activity activity,
-			final boolean isHomeStateful) {
-		super(activity, isHomeStateful);
+			final boolean isHomeStateful, final int homeResId) {
+		super(activity, isHomeStateful, homeResId);
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		final SimpleMenu tempMenu = new SimpleMenu(mActivity);
 		final SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu,
 				android.R.id.home, 0, mActivity.getString(R.string.home));
-		// homeItem.setIcon(R.drawable.ic_home);
+		homeItem.setIcon(mHomeResId);
 		addActionItemCompatFromMenuItem(homeItem);
 
 		// add title text

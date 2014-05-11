@@ -40,9 +40,14 @@ public abstract class ActionBarHelper {
 	/** Stores the status of the home icon. */
 	protected final boolean mHomeActive;
 
-	protected ActionBarHelper(Activity activity, boolean isHomeActive) {
+	/** Stores the resource id of the home icon. */
+	protected final int mHomeResId;
+
+	protected ActionBarHelper(Activity activity, boolean isHomeActive,
+			int homeResId) {
 		mActivity = activity;
 		mHomeActive = isHomeActive;
+		mHomeResId = homeResId;
 	}
 
 	/**
@@ -90,7 +95,7 @@ public abstract class ActionBarHelper {
 
 	/**
 	 * Sets the indeterminate loading state of the item identified by
-	 *  <code>R.id.menu_refresh</code>.
+	 * <code>R.id.menu_refresh</code>.
 	 */
 	public abstract void setRefreshActionItemState(boolean isRefreshing);
 
@@ -106,13 +111,14 @@ public abstract class ActionBarHelper {
 	 * @return a version specific {@link ActionBarHelper}
 	 */
 	public static ActionBarHelper createInstance(Activity activity,
-			final boolean isHomeActive) {
+			final boolean isHomeActive, final int homeResId) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			return new ActionBarHelperICS(activity, isHomeActive);
+			return new ActionBarHelperICS(activity, isHomeActive, homeResId);
 		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			return new ActionBarHelperHoneycomb(activity, isHomeActive);
+			return new ActionBarHelperHoneycomb(activity, isHomeActive,
+					homeResId);
 		} else {
-			return new ActionBarHelperFroyo(activity, isHomeActive);
+			return new ActionBarHelperFroyo(activity, isHomeActive, homeResId);
 		}
 	}
 }

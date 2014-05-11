@@ -41,8 +41,9 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	private Menu mOptionsMenu = null;
 
-	protected ActionBarHelperHoneycomb(Activity activity, boolean isHomeStateful) {
-		super(activity, isHomeStateful);
+	protected ActionBarHelperHoneycomb(final Activity activity,
+			final boolean isHomeStateful, final int homeResId) {
+		super(activity, isHomeStateful, homeResId);
 	}
 
 	@Override

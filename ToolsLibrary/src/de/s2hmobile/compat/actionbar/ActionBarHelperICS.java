@@ -31,9 +31,9 @@ import android.os.Bundle;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ActionBarHelperICS extends ActionBarHelperHoneycomb {
 
-	protected ActionBarHelperICS(Activity activity,
-			final boolean isHomeStateful) {
-		super(activity, isHomeStateful);
+	protected ActionBarHelperICS(final Activity activity,
+			final boolean isHomeStateful, final int homeResId) {
+		super(activity, isHomeStateful, homeResId);
 	}
 
 	/**

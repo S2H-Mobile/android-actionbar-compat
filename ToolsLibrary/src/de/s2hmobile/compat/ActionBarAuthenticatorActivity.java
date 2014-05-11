@@ -37,7 +37,7 @@ public abstract class ActionBarAuthenticatorActivity extends
 
 	private final ActionBarHelper mActionBarHelper = ActionBarHelper
 			.createInstance(ActionBarAuthenticatorActivity.this,
-					isHomeStateful());
+					isHomeStateful(), setHomeResId());
 
 	/** {@inheritDoc} */
 	@Override
