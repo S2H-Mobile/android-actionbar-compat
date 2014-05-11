@@ -313,7 +313,7 @@ public class ActionBarHelperFroyo extends ActionBarHelper {
 		// add home icon using a temporary SimpleMenu
 		final SimpleMenu tempMenu = new SimpleMenu(mActivity);
 		final SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu,
-				android.R.id.home, 0, mActivity.getString(R.string.menu_home));
+				android.R.id.home, 0, mActivity.getString(R.string.home));
 		// homeItem.setIcon(R.drawable.ic_home);
 		addActionItemCompatFromMenuItem(homeItem);
 

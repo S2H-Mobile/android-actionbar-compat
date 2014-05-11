@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (C) 2013, S2H Mobile
+  Copyright (C) 2013 - 2014, S2H Mobile
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -17,10 +17,9 @@
 
 <resources>
 
-    <string name="menu_home">Home</string>
-    <string name="item_refresh">Neu Laden</string>
-    <string name="menu_search">Suchen</string>
-    <string name="menu_share">Teilen</string>
-    <string name="dialog_choose">"Vorgang abschließen mit"</string>
+    <string name="home">Home</string>
+    <string name="refresh">Neu Laden</string>
+    <string name="search">Suchen</string>
+    <string name="share">Teilen</string>
 
 </resources>
