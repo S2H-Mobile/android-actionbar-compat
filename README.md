@@ -1,5 +1,5 @@
 # android-actionbar-compat
-This compatibility library is based on the AOSP ActionBarCompat sample project.
+This compatibility library is based on the AOSP [ActionBarCompat sample project](https://android.googlesource.com/platform/development/+/f84558cf16844b6c96e0744544ff2094bc4dbf50/samples/ActionBarCompat).
 
 It makes the ActionBar API available to Froyo+ devices. You can define the state of the home icon as a navigation item programmatically.
 
