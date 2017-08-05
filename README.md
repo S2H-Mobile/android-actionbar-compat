@@ -4,14 +4,21 @@ This compatibility library is based on the AOSP [ActionBarCompat sample project]
 It makes the ActionBar API available to Froyo+ devices. You can define the state of the home icon as a navigation item programmatically.
 
 ## Setup
-Import the project folder as a library into Eclipse ADT.
+- Import the project folder as a library into the Eclipse ADT workspace.
+- Add the library to an existing Android application: 
+
+1. Right-click on your application in Eclipse -> _Properties_
+2. Select _Android_ -> _Library_
+3. Click on _Add ..._
+4. Select the library and click _Ok_
 
 ## Usage
-- Add this library to the build path of your Android project.
 - Extend your activity from one of the provided base activities.
 - Implement the necessary methods in your activity.
 
 ## Example
+
+
 ```java
 package com.example.actionbar;
 
