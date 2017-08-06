@@ -14,9 +14,7 @@ It makes the ActionBar API available to Froyo+ devices. You can define the state
 
 ## Usage
 - Extend your activity from one of the provided base activities.
-- Implement the necessary methods in your activity.
-
-## Example
+- Implement the methods ``isHomeStateful()`` and ``setHomeResId()`` in your activity. The first one declares the home icon as clickable, the second one defines the resource identifier for the home icon drawable:
 
 
 ```java
